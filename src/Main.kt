@@ -18,6 +18,8 @@ object Main : MotionSensor.MotionSensorCallback {
 
             val socketPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_02)
             val pcPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_03)
+            socketPin.state = PinState.LOW
+            pcPin.state = PinState.LOW
             hardwareManager = HardwareManager(socketPin, pcPin)
 
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
