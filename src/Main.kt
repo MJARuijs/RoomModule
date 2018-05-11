@@ -1,4 +1,8 @@
 import client.SecureClient
+import com.pi4j.io.gpio.GpioController
+import com.pi4j.io.gpio.GpioFactory
+import com.pi4j.io.gpio.PinState
+import com.pi4j.io.gpio.RaspiPin
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -16,16 +20,22 @@ object Main {
         println("Server started")
         val client = SecureClient(server.accept())
 
+        val gpioController = GpioFactory.getInstance()
+        val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+
+
         while (true) {
             val decodedMessage = client.readMessage()
 
-           when (decodedMessage) {
+            when (decodedMessage) {
                 "light_on" -> setState(6, true)
                 "light_off" -> setState(6, false)
                 "get_configuration" -> getConfiguration()
             }
             client.writeMessage("SUCCESS")
         }
+
+
 
     }
 
