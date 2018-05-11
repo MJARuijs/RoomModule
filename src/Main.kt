@@ -17,7 +17,7 @@ object Main {
         val server = Server(4444)
         println("Server started")
         lateinit var ledPin: GpioPinDigitalOutput
-        lateinit var motionSensorPin: GpioPinAnalogInput
+        lateinit var motionSensorPin: GpioPinDigitalInput
 
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
@@ -25,11 +25,11 @@ object Main {
 
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
             val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
-            motionSensorPin = gpioController.provisionAnalogInputPin(RaspiPin.GPIO_07)
+            motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
 
             Thread {
                 while (true) {
-                    if (motionSensorPin.value > 700) {
+                    if (motionSensorPin.isHigh) {
                         ledPin.high()
                     } else {
                         ledPin.low()
