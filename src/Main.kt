@@ -12,7 +12,7 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val server = Server(80)
+        val server = Server(4444)
         println("Server started")
         val client = SecureClient(server.accept())
 
