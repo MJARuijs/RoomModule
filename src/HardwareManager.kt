@@ -1,7 +1,7 @@
 import com.pi4j.io.gpio.GpioPinDigitalOutput
 import com.pi4j.io.gpio.PinState
 
-class HardwareManager(private val socketPin: GpioPinDigitalOutput, val pcPin: GpioPinDigitalOutput) {
+class HardwareManager(private val socketPin: GpioPinDigitalOutput, private val pcPin: GpioPinDigitalOutput) {
 
     fun setSocketState(state: Boolean) {
         if (state) {
@@ -12,7 +12,7 @@ class HardwareManager(private val socketPin: GpioPinDigitalOutput, val pcPin: Gp
     }
 
     fun setPcState(state: Boolean) {
-        pcPin.pulse(50)
+        pcPin.pulse(500)
     }
 
 }
