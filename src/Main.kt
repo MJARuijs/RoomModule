@@ -1,17 +1,11 @@
 import client.SecureClient
 import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.URL
 
 object Main : MotionSensor.MotionSensorCallback {
 
-
-    private const val HUE_IP = "192.168.0.101"
-    private const val HUESERNAME = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
+    private val lightController = LightController()
+    private var hardwareManager: HardwareManager? = null
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -21,6 +15,10 @@ object Main : MotionSensor.MotionSensorCallback {
 
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
+
+            val socketPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_02)
+            val pcPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_03)
+            hardwareManager = HardwareManager(socketPin, pcPin)
 
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             val motionSensor = MotionSensor(motionSensorPin, this)
@@ -37,73 +35,51 @@ object Main : MotionSensor.MotionSensorCallback {
         while (true) {
             val decodedMessage = client.readMessage()
 
-            when (decodedMessage) {
-                "light_on" -> setState(6, true)
-                "light_off" -> setState(6, false)
+            val response: String = when (decodedMessage) {
+                "light_on" -> {
+                    lightController.setState(6, true)
+                    "SUCCESS"
+                }
+                "light_off" -> {
+                    lightController.setState(6, false)
+                    "SUCCESS"
+                }
+                "socket_power_on" -> {
+                    hardwareManager?.setSocketState(true)
+                    "SUCCESS"
+                }
+                "socket_power_off" -> {
+                    hardwareManager?.setSocketState(false)
+                    "SUCCESS"
+                }
+                "pc_power_on" -> {
+                    hardwareManager?.setPcState(true)
+                    "SUCCESS"
+                }
+                "pc_power_off" -> {
+                    hardwareManager?.setPcState(false)
+                    "SUCCESS"
+                }
                 "get_configuration" -> getConfiguration()
+                else -> {
+                    "COMMAND_NOT_SUPPORTED"
+                }
             }
-            client.writeMessage("SUCCESS")
+            client.writeMessage(response)
         }
 
     }
 
-    private fun getConfiguration() {
-
-    }
-
-    private fun setState(lampID: Int, newState: Boolean) {
-        val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/$lampID/state")
-        val connection = url.openConnection() as HttpURLConnection
-        connection.doOutput = true
-        connection.requestMethod = "PUT"
-
-        val outputStream = OutputStreamWriter(connection.outputStream)
-        outputStream.write("{\"on\":$newState}")
-        outputStream.close()
-
-        val ins = connection.inputStream
-        val rd = BufferedReader(InputStreamReader(ins))
-
+    private fun getConfiguration(): String {
         val builder = StringBuilder()
-        var line = rd.readLine()
-
-        while (line != null) {
-            builder.append(line).append("\n")
-            line = rd.readLine()
-        }
-
-        rd.close()
-    }
-
-    private fun getState(lampID: Int): Boolean {
-        val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/$lampID")
-        val connection = url.openConnection() as HttpURLConnection
-        connection.doOutput = true
-        connection.requestMethod = "GET"
-
-        val ins = connection.inputStream
-        val rd = BufferedReader(InputStreamReader(ins))
-
-        val builder = StringBuilder()
-        var line = rd.readLine()
-
-        while (line != null) {
-            builder.append(line).append("\n")
-            line = rd.readLine()
-        }
-
-        rd.close()
-
-        val startIndex = builder.indexOf("\"on\"", 0, false) + 5
-        val endIndex = builder.indexOf(",", startIndex, false)
-
-        val state = builder.substring(startIndex, endIndex)
-
-        return state == "true"
+        builder.append("socket_power=true, ")
+        builder.append("pc_power=true, ")
+        builder.append("light=${lightController.getState(6)}, ")
+        return builder.toString()
     }
 
     override fun onStateChanged(state: Boolean) {
-        setState(6, state)
+        lightController.setState(6, state)
     }
 
 }
