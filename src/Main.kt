@@ -1,6 +1,7 @@
 import client.SecureClient
 import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
+import com.pi4j.wiringpi.Gpio.delay
 
 object Main : MotionSensor.MotionSensorCallback {
 
@@ -32,6 +33,7 @@ object Main : MotionSensor.MotionSensorCallback {
                 } else {
                     println("LOW")
                 }
+                delay(500)
             }
 
 //            Thread {
