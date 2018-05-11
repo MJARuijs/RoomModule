@@ -18,24 +18,39 @@ object Main {
     fun main(args: Array<String>) {
         val server = Server(4444)
         println("Server started")
+
         if (getOsName().startsWith("Linux")) {
-            val gpioController = GpioFactory.getInstance()
-            println("pin should be on now")
-            val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.LOW)
-        }
-        println("Done")
-        val client = SecureClient(server.accept())
 
-        while (true) {
-            val decodedMessage = client.readMessage()
+            while (true) {
+                val gpioController = GpioFactory.getInstance()
+                println("pin should be on now")
 
-            when (decodedMessage) {
-                "light_on" -> setState(6, true)
-                "light_off" -> setState(6, false)
-                "get_configuration" -> getConfiguration()
+                val ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
+                val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
+                if (buttonPin.isLow) {
+                    ledPin.high()
+                } else {
+                    ledPin.low()
+                }
             }
-            client.writeMessage("SUCCESS")
+
+
         }
+
+
+        println("Done")
+//        val client = SecureClient(server.accept())
+//
+//        while (true) {
+//            val decodedMessage = client.readMessage()
+//
+//            when (decodedMessage) {
+//                "light_on" -> setState(6, true)
+//                "light_off" -> setState(6, false)
+//                "get_configuration" -> getConfiguration()
+//            }
+//            client.writeMessage("SUCCESS")
+//        }
 
     }
 
