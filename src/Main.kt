@@ -18,11 +18,12 @@ object Main {
     fun main(args: Array<String>) {
         val server = Server(4444)
         println("Server started")
-        val client = SecureClient(server.accept())
 
         val gpioController = GpioFactory.getInstance()
-        val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+        println("pin should be on now")
 
+        val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+        val client = SecureClient(server.accept())
 
         while (true) {
             val decodedMessage = client.readMessage()
