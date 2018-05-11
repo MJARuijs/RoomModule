@@ -1,11 +1,7 @@
-class Main {
+object Main {
 
-    object Main {
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            println("Hoi")
-        }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        println("Hoi")
     }
-
 }
