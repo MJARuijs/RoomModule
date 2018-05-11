@@ -1,8 +1,8 @@
 import client.SecureClient
-import com.pi4j.io.gpio.GpioController
 import com.pi4j.io.gpio.GpioFactory
 import com.pi4j.io.gpio.PinState
 import com.pi4j.io.gpio.RaspiPin
+import com.pi4j.system.SystemInfo.getOsName
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -15,14 +15,15 @@ object Main {
     private const val huesername = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
 
     @JvmStatic
-    fun main(args: Array<String>) {
+    fun main() {
         val server = Server(4444)
         println("Server started")
-
-        val gpioController = GpioFactory.getInstance()
-        println("pin should be on now")
-
-        val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+        if (getOsName().startsWith("Linux")) {
+            val gpioController = GpioFactory.getInstance()
+            println("pin should be on now")
+            val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+        }
+        println("Done")
         val client = SecureClient(server.accept())
 
         while (true) {
@@ -35,8 +36,6 @@ object Main {
             }
             client.writeMessage("SUCCESS")
         }
-
-
 
     }
 
