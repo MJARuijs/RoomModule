@@ -4,7 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.nio.charset.StandardCharsets
 
-class ArduinoClient(val name: String, private val channel: SocketChannel): Client {
+class ArduinoClient(private val channel: SocketChannel): Client {
 
     private val writeSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)

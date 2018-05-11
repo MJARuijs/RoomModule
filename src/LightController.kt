@@ -6,7 +6,7 @@ import java.net.URL
 
 class LightController {
 
-    fun setState(lampID: Int, newState: Boolean) {
+    fun setState(lampID: Int, newState: Boolean): String {
         val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/$lampID/state")
         val connection = url.openConnection() as HttpURLConnection
         connection.doOutput = true
@@ -27,6 +27,7 @@ class LightController {
             line = rd.readLine()
         }
         rd.close()
+        return "SUCCESS"
     }
 
     fun getState(lampID: Int): Boolean {

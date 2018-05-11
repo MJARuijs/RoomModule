@@ -1,18 +1,22 @@
-import com.pi4j.io.gpio.GpioPinDigitalOutput
-import com.pi4j.io.gpio.PinState
+import client.ArduinoClient
 
-class HardwareManager(private val socketPin: GpioPinDigitalOutput, private val pcPin: GpioPinDigitalOutput) {
+class HardwareManager() {
 
-    fun setSocketState(state: Boolean) {
-        if (state) {
-            socketPin.high()
-        } else {
-            socketPin.low()
-        }
+    private val deviceManagers = ArrayList<ArduinoClient>()
+
+    fun addDeviceManager(device: ArduinoClient) {
+        deviceManagers += device
     }
 
-    fun setPcState(state: Boolean) {
-        pcPin.pulse(500)
+    fun togglePowerSocket(state:Boolean): String {
+        return if (state) deviceManagers[0].sendCommand("socket_power_on") else deviceManagers[0].sendCommand("socket_power_off")
     }
 
+    fun togglePC(state: Boolean): String {
+        return if (state) deviceManagers[0].sendCommand("pc_power_on") else deviceManagers[0].sendCommand("pc_power_off")
+    }
+
+    fun getConfiguration(): String {
+        return deviceManagers[0].sendCommand("get_configuration")
+    }
 }

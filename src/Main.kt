@@ -1,15 +1,19 @@
+import client.ArduinoClient
 import client.SecureClient
 import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
-import com.pi4j.wiringpi.Gpio.delay
+import java.net.InetSocketAddress
+import java.nio.channels.SocketChannel
 
 object Main : MotionSensor.MotionSensorCallback {
 
     private val lightController = LightController()
-    private var hardwareManager: HardwareManager? = null
+    private var hardwareManager = HardwareManager()
 
     @JvmStatic
     fun main(args: Array<String>) {
+
+        hardwareManager.addDeviceManager(ArduinoClient(SocketChannel.open(InetSocketAddress("192.168.0.14", 80))))
 
         val server = Server(4444)
         println("Server started")
@@ -17,76 +21,44 @@ object Main : MotionSensor.MotionSensorCallback {
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
 
-            val pcReadPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_00)
-            val socketPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_02)
-            val pcPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_03)
-            socketPin.low()
-            pcPin.low()
-            hardwareManager = HardwareManager(socketPin, pcPin)
-
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             val motionSensor = MotionSensor(motionSensorPin, this)
 
-            while (true) {
-                if (pcReadPin.isHigh) {
-                    println("HIGH")
-                } else {
-                    println("LOW")
+            Thread {
+                while (true) {
+                    motionSensor.update()
                 }
-                delay(500)
-            }
-
-//            Thread {
-//                while (true) {
-//                    motionSensor.update()
-//                }
-//            }.start()
+            }.start()
         }
 
-//        val client = SecureClient(server.accept())
-//
-//        while (true) {
-//            val decodedMessage = client.readMessage()
-//
-//            val response: String = when (decodedMessage) {
-//                "light_on" -> {
-//                    lightController.setState(6, true)
-//                    "SUCCESS"
-//                }
-//                "light_off" -> {
-//                    lightController.setState(6, false)
-//                    "SUCCESS"
-//                }
-//                "socket_power_on" -> {
-//                    hardwareManager?.setSocketState(true)
-//                    "SUCCESS"
-//                }
-//                "socket_power_off" -> {
-//                    hardwareManager?.setSocketState(false)
-//                    "SUCCESS"
-//                }
-//                "pc_power_on" -> {
-//                    hardwareManager?.setPcState(true)
-//                    "SUCCESS"
-//                }
-//                "pc_power_off" -> {
-//                    hardwareManager?.setPcState(false)
-//                    "SUCCESS"
-//                }
-//                "get_configuration" -> getConfiguration()
-//                else -> {
-//                    "COMMAND_NOT_SUPPORTED"
-//                }
-//            }
-//            client.writeMessage(response)
-//        }
+        val client = SecureClient(server.accept())
+
+        while (true) {
+            val decodedMessage = client.readMessage()
+
+            val response: String = when (decodedMessage) {
+
+                "light_on" -> lightController.setState(6, true)
+                "light_off" -> lightController.setState(6, false)
+
+                "socket_power_on" -> hardwareManager.togglePowerSocket(true)
+                "socket_power_off" -> hardwareManager.togglePowerSocket(false)
+
+                "pc_power_on" -> hardwareManager.togglePC(true)
+                "pc_power_off" -> hardwareManager.togglePC(false)
+
+                "get_configuration" -> getConfiguration()
+                else -> "COMMAND_NOT_SUPPORTED"
+
+            }
+            client.writeMessage(response)
+        }
 
     }
 
     private fun getConfiguration(): String {
         val builder = StringBuilder()
-        builder.append("socket_power=true, ")
-        builder.append("pc_power=true, ")
+        builder.append(hardwareManager.getConfiguration())
         builder.append("light=${lightController.getState(6)}, ")
         return builder.toString()
     }
