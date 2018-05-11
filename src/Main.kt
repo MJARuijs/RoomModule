@@ -13,9 +13,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         val server = Server(80)
-
-        setState(6, false)
-        getState(6)
+        println("Server started")
         val client = SecureClient(server.accept())
 
         while (true) {
