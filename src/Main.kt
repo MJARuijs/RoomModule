@@ -1,7 +1,5 @@
 import client.SecureClient
-import com.pi4j.io.gpio.GpioFactory
-import com.pi4j.io.gpio.PinState
-import com.pi4j.io.gpio.RaspiPin
+import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,38 +16,41 @@ object Main {
     fun main(args: Array<String>) {
         val server = Server(4444)
         println("Server started")
+        lateinit var ledPin: GpioPinDigitalOutput
+        lateinit var motionSensorPin: GpioPinAnalogInput
 
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
 
-            val ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
+
+            ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
             val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
-            while (true) {
+            motionSensorPin = gpioController.provisionAnalogInputPin(RaspiPin.GPIO_07)
 
-                if (buttonPin.isLow) {
-                    ledPin.high()
-                } else {
-                    ledPin.low()
+            Thread {
+                while (true) {
+                    if (motionSensorPin.value > 700) {
+                        ledPin.high()
+                    } else {
+                        ledPin.low()
+                    }
                 }
-            }
 
-
+            }.start()
         }
 
+        val client = SecureClient(server.accept())
 
-        println("Done")
-//        val client = SecureClient(server.accept())
-//
-//        while (true) {
-//            val decodedMessage = client.readMessage()
-//
-//            when (decodedMessage) {
-//                "light_on" -> setState(6, true)
-//                "light_off" -> setState(6, false)
-//                "get_configuration" -> getConfiguration()
-//            }
-//            client.writeMessage("SUCCESS")
-//        }
+        while (true) {
+            val decodedMessage = client.readMessage()
+
+            when (decodedMessage) {
+                "light_on" -> setState(6, true)
+                "light_off" -> setState(6, false)
+                "get_configuration" -> getConfiguration()
+            }
+            client.writeMessage("SUCCESS")
+        }
 
     }
 
