@@ -15,7 +15,7 @@ object Main {
     private const val huesername = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
 
     @JvmStatic
-    fun main() {
+    fun main(args: Array<String>) {
         val server = Server(4444)
         println("Server started")
         if (getOsName().startsWith("Linux")) {
