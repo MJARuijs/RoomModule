@@ -20,13 +20,12 @@ object Main {
         println("Server started")
 
         if (getOsName().startsWith("Linux")) {
+            val gpioController = GpioFactory.getInstance()
 
+            val ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
+            val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
             while (true) {
-                val gpioController = GpioFactory.getInstance()
-                println("pin should be on now")
 
-                val ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
-                val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
                 if (buttonPin.isLow) {
                     ledPin.high()
                 } else {
