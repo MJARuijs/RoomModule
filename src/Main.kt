@@ -21,7 +21,7 @@ object Main {
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
             println("pin should be on now")
-            val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.HIGH)
+            val pin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED", PinState.LOW)
         }
         println("Done")
         val client = SecureClient(server.accept())
