@@ -7,35 +7,28 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 
-object Main {
+object Main : MotionSensor.MotionSensorCallback {
 
-    private const val hueIP = "192.168.0.101"
-    private const val huesername = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
+
+    private const val HUE_IP = "192.168.0.101"
+    private const val HUESERNAME = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
 
     @JvmStatic
     fun main(args: Array<String>) {
+
         val server = Server(4444)
         println("Server started")
-        lateinit var ledPin: GpioPinDigitalOutput
-        lateinit var motionSensorPin: GpioPinDigitalInput
 
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
 
-
-            ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01)
-            val buttonPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_02)
-            motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
+            val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
+            val motionSensor = MotionSensor(motionSensorPin, this)
 
             Thread {
                 while (true) {
-                    if (motionSensorPin.isHigh) {
-                        ledPin.high()
-                    } else {
-                        ledPin.low()
-                    }
+                    motionSensor.update()
                 }
-
             }.start()
         }
 
@@ -59,7 +52,7 @@ object Main {
     }
 
     private fun setState(lampID: Int, newState: Boolean) {
-        val url = URL("http://$hueIP/api/$huesername/lights/$lampID/state")
+        val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/$lampID/state")
         val connection = url.openConnection() as HttpURLConnection
         connection.doOutput = true
         connection.requestMethod = "PUT"
@@ -83,7 +76,7 @@ object Main {
     }
 
     private fun getState(lampID: Int): Boolean {
-        val url = URL("http://$hueIP/api/$huesername/lights/$lampID")
+        val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/$lampID")
         val connection = url.openConnection() as HttpURLConnection
         connection.doOutput = true
         connection.requestMethod = "GET"
@@ -108,4 +101,9 @@ object Main {
 
         return state == "true"
     }
+
+    override fun onStateChanged(state: Boolean) {
+        setState(6, state)
+    }
+
 }
