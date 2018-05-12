@@ -43,6 +43,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
                 "socket_power_on" -> hardwareManager.togglePowerSocket(true)
                 "socket_power_off" -> hardwareManager.togglePowerSocket(false)
+                "confirm_socket_off" -> hardwareManager.forceSocketOff()
 
                 "pc_power_on" -> hardwareManager.togglePC(true)
                 "pc_power_off" -> hardwareManager.togglePC(false)

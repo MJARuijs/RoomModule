@@ -12,6 +12,10 @@ class HardwareManager {
         return if (state) deviceManagers[0].sendCommand("socket_power_on") else deviceManagers[0].sendCommand("socket_power_off")
     }
 
+    fun forceSocketOff(): String {
+        return deviceManagers[0].sendCommand("confirm_socket_off")
+    }
+
     fun togglePC(state: Boolean): String {
         return if (state) deviceManagers[0].sendCommand("pc_power_on") else deviceManagers[0].sendCommand("pc_power_off")
     }
