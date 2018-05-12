@@ -3,7 +3,6 @@ import client.SecureClient
 import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
 import java.net.InetSocketAddress
-import java.nio.channels.SocketChannel
 
 object Main : MotionSensor.MotionSensorCallback {
 
@@ -14,7 +13,7 @@ object Main : MotionSensor.MotionSensorCallback {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        hardwareManager.addDeviceManager(ArduinoClient(SocketChannel.open(InetSocketAddress("192.168.0.14", 80))))
+        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.0.14", 80)))
 
         val server = Server(4444)
         println("Server started")
@@ -59,6 +58,7 @@ object Main : MotionSensor.MotionSensorCallback {
                 else -> "COMMAND_NOT_SUPPORTED"
 
             }
+
             client.writeMessage(response)
         }
 
@@ -68,7 +68,12 @@ object Main : MotionSensor.MotionSensorCallback {
         val builder = StringBuilder()
         builder.append(hardwareManager.getConfiguration())
         builder.append("light=${lightController.getState(6)}, ")
-        builder.append("use_motion_sensor=${motionSensor.isEnabled()}, ")
+
+        if (getOsName().startsWith("Linux")) {
+            builder.append("use_motion_sensor=${motionSensor.isEnabled()}, ")
+        } else {
+            builder.append("use_motion_sensor=false, ")
+        }
         return builder.toString()
     }
 

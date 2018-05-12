@@ -27,7 +27,6 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
                 callback.onStateChanged(false)
             }
         }
-
     }
 
     fun isEnabled(): Boolean {

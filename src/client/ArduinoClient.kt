@@ -1,10 +1,13 @@
 package client
 
+import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.nio.charset.StandardCharsets
 
-class ArduinoClient(private val channel: SocketChannel): Client {
+class ArduinoClient(address: InetSocketAddress): Client {
+
+    private var channel: SocketChannel = SocketChannel.open(address)
 
     private val writeSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
@@ -59,12 +62,12 @@ class ArduinoClient(private val channel: SocketChannel): Client {
         return data
     }
 
-    fun writeMessage(message: String) {
+    private fun writeMessage(message: String) {
         val bytes = message.toByteArray(StandardCharsets.UTF_8)
         write(bytes)
     }
 
-    fun readMessage(): String {
+    private fun readMessage(): String {
 
         return try {
             val buffer = read()
