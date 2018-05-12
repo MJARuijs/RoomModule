@@ -2,10 +2,16 @@ import com.pi4j.io.gpio.GpioPinDigitalInput
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
 
+    private var enabled = false
+
     private var lastMovementDetected = 0L
-    var movementDetected = false
+    private var movementDetected = false
 
     fun update() {
+        if (!enabled) {
+            return
+        }
+
         val currentTime = System.currentTimeMillis()
 
         if (sensorPin.isHigh) {
@@ -22,6 +28,16 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
             }
         }
 
+    }
+
+    fun enable(): String {
+        enabled = true
+        return "SUCCESS"
+    }
+
+    fun disable(): String {
+        enabled = false
+        return "SUCCESS"
     }
 
     companion object {

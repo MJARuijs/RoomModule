@@ -9,6 +9,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private val lightController = LightController()
     private var hardwareManager = HardwareManager()
+    private lateinit var motionSensor: MotionSensor
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -22,7 +23,7 @@ object Main : MotionSensor.MotionSensorCallback {
             val gpioController = GpioFactory.getInstance()
 
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
-            val motionSensor = MotionSensor(motionSensorPin, this)
+            motionSensor = MotionSensor(motionSensorPin, this)
 
             Thread {
                 while (true) {
@@ -46,6 +47,13 @@ object Main : MotionSensor.MotionSensorCallback {
 
                 "pc_power_on" -> hardwareManager.togglePC(true)
                 "pc_power_off" -> hardwareManager.togglePC(false)
+
+                "use_motion_sensor_on" -> {
+                    if (getOsName().startsWith("Linux")) motionSensor.enable() else "ERR"
+                }
+                "use_motion_sensor_off" -> {
+                    if (getOsName().startsWith("Linux")) motionSensor.disable() else "ERR"
+                }
 
                 "get_configuration" -> getConfiguration()
                 else -> "COMMAND_NOT_SUPPORTED"

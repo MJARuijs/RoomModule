@@ -1,6 +1,6 @@
 import client.ArduinoClient
 
-class HardwareManager() {
+class HardwareManager {
 
     private val deviceManagers = ArrayList<ArduinoClient>()
 
