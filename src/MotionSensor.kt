@@ -30,6 +30,10 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
 
     }
 
+    fun isEnabled(): Boolean {
+        return enabled
+    }
+
     fun enable(): String {
         enabled = true
         return "SUCCESS"

@@ -68,6 +68,7 @@ object Main : MotionSensor.MotionSensorCallback {
         val builder = StringBuilder()
         builder.append(hardwareManager.getConfiguration())
         builder.append("light=${lightController.getState(6)}, ")
+        builder.append("use_motion_sensor=${motionSensor.isEnabled()}, ")
         return builder.toString()
     }
 
