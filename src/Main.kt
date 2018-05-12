@@ -46,6 +46,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
                 "pc_power_on" -> hardwareManager.togglePC(true)
                 "pc_power_off" -> hardwareManager.togglePC(false)
+                "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
 
                 "use_motion_sensor_on" -> {
                     if (getOsName().startsWith("Linux")) motionSensor.enable() else "ERR"
