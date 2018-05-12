@@ -17,6 +17,12 @@ class HardwareManager {
     }
 
     fun getConfiguration(): String {
-        return deviceManagers[0].sendCommand("get_configuration")
+        val response = deviceManagers[0].sendCommand("get_configuration")
+        if (response == "COMMAND_NOT_SUPPORTED") {
+            println("RETRYING")
+            return getConfiguration()
+        }
+
+        return response
     }
 }
