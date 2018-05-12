@@ -29,7 +29,7 @@ class HardwareManager {
         if (response == "COMMAND_NOT_SUPPORTED" || response == "ERROR") {
             return getConfiguration()
         }
-
+        println(response)
         return response
     }
 }
