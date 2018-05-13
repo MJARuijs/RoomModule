@@ -35,7 +35,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
         while (true) {
             val decodedMessage = client.readMessage()
-            println("Decoded: $decodedMessage")
+
             var response: String = when (decodedMessage) {
 
                 "light_on" -> {
@@ -78,7 +78,6 @@ object Main : MotionSensor.MotionSensorCallback {
             } else if (!response.startsWith("configuration")){
                 response += getModuleConfig()
             }
-            println("Response: $response")
             client.writeMessage(response)
         }
 
