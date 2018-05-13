@@ -73,11 +73,10 @@ object Main : MotionSensor.MotionSensorCallback {
 
             }
 
-
             if (!response.startsWith("configuration")) {
                 response += getModuleConfig()
             }
-            println(response)
+
             client.writeMessage(response)
         }
 
