@@ -73,7 +73,10 @@ object Main : MotionSensor.MotionSensorCallback {
 
             }
 
-            if (!response.startsWith("configuration")) {
+            if (response == "PC_STILL_ON") {
+                client.writeMessage(response)
+                return
+            } else if (!response.startsWith("configuration")){
                 response += getModuleConfig()
             }
 
