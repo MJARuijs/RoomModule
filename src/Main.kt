@@ -36,10 +36,16 @@ object Main : MotionSensor.MotionSensorCallback {
         while (true) {
             val decodedMessage = client.readMessage()
 
-            val response: String = when (decodedMessage) {
+            var response: String = when (decodedMessage) {
 
-                "light_on" -> lightController.setState(6, true)
-                "light_off" -> lightController.setState(6, false)
+                "light_on" -> {
+                    lightController.setState(6, true)
+                    getConfiguration()
+                }
+                "light_off" -> {
+                    lightController.setState(6, false)
+                    getConfiguration()
+                }
 
                 "socket_power_on" -> hardwareManager.togglePowerSocket(true)
                 "socket_power_off" -> hardwareManager.togglePowerSocket(false)
@@ -50,10 +56,16 @@ object Main : MotionSensor.MotionSensorCallback {
                 "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
 
                 "use_motion_sensor_on" -> {
-                    if (getOsName().startsWith("Linux")) motionSensor.enable() else "ERR"
+                    if (getOsName().startsWith("Linux")) {
+                        motionSensor.enabled = true
+                        getConfiguration()
+                    } else "ERR"
                 }
                 "use_motion_sensor_off" -> {
-                    if (getOsName().startsWith("Linux")) motionSensor.disable() else "ERR"
+                    if (getOsName().startsWith("Linux")) {
+                        motionSensor.enabled = false
+                        getConfiguration()
+                    } else "ERR"
                 }
 
                 "get_configuration" -> getConfiguration()
@@ -61,6 +73,10 @@ object Main : MotionSensor.MotionSensorCallback {
 
             }
 
+            if (response.startsWith("configuration")) {
+                response += getModuleConfig()
+            }
+            println(response)
             client.writeMessage(response)
         }
 
@@ -68,11 +84,21 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private fun getConfiguration(): String {
         val builder = StringBuilder()
-        builder.append(hardwareManager.getConfiguration())
+        builder.append(getHardwareConfig())
+        builder.append(getModuleConfig())
+        return builder.toString()
+    }
+
+    private fun getHardwareConfig(): String {
+        return hardwareManager.getConfiguration()
+    }
+
+    private fun getModuleConfig(): String {
+        val builder = StringBuilder()
         builder.append("light=${lightController.getState(6)}, ")
 
         if (getOsName().startsWith("Linux")) {
-            builder.append("use_motion_sensor=${motionSensor.isEnabled()}, ")
+            builder.append("use_motion_sensor=${motionSensor.enabled}, ")
         } else {
             builder.append("use_motion_sensor=false, ")
         }
