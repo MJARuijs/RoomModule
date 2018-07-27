@@ -13,7 +13,7 @@ object Main : MotionSensor.MotionSensorCallback {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.0.14", 80)))
+        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
 
         val server = Server(4444)
         println("Server started")
