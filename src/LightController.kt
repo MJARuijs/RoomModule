@@ -57,8 +57,8 @@ class LightController {
     }
 
     companion object {
-        private const val HUE_IP = "192.168.0.101"
-        private const val HUESERNAME = "dMTAhV9kA9GNdMoTiBdndnhIjRchkAULjIjtLPXE"
+        private const val HUE_IP = "192.168.178.13"
+        private const val HUESERNAME = "lmLRYysh-k-NDdh7AwdoeayPUizr3whOEesAkMHK"
     }
 
 }

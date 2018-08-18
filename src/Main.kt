@@ -20,7 +20,6 @@ object Main : MotionSensor.MotionSensorCallback {
 
         if (getOsName().startsWith("Linux")) {
             val gpioController = GpioFactory.getInstance()
-
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
 

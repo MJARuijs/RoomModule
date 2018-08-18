@@ -1,5 +1,6 @@
 package client
 
+import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -30,36 +31,40 @@ class ArduinoClient(address: InetSocketAddress): Client {
         channel.write(buffer)
     }
 
+    @Throws(IOException::class)
     override fun read(): ByteBuffer {
+        return try {
+            // Read size
+            readSizeBuffer.clear()
+            val sizeBytesRead = channel.read(readSizeBuffer)
 
-        // Read size
-        readSizeBuffer.clear()
-        val sizeBytesRead = channel.read(readSizeBuffer)
+            if (sizeBytesRead == -1) {
+                close()
+                throw ClientException("Client was closed")
+            }
 
-        if (sizeBytesRead == -1) {
-            close()
-            throw ClientException("client.Client was closed")
+            readSizeBuffer.rewind()
+
+            // Read data
+            val size = readSizeBuffer.int
+
+            if (size > 1000) {
+                throw ClientException("Size was too large")
+            }
+
+            val data = ByteBuffer.allocate(size)
+            val bytesRead = channel.read(data)
+
+            if (bytesRead == -1) {
+                close()
+                throw ClientException("Client was closed")
+            }
+
+            data.rewind()
+            data
+        } catch (e: IOException) {
+            ByteBuffer.allocate(0)
         }
-
-        readSizeBuffer.rewind()
-
-        // Read data
-        val size = readSizeBuffer.int
-
-        if (size > 1000) {
-            throw ClientException("Size was too large")
-        }
-
-        val data = ByteBuffer.allocate(size)
-        val bytesRead = channel.read(data)
-
-        if (bytesRead == -1) {
-            close()
-            throw ClientException("client.Client was closed")
-        }
-
-        data.rewind()
-        return data
     }
 
     private fun writeMessage(message: String) {
