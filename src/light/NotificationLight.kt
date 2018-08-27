@@ -15,7 +15,7 @@ object NotificationLight {
     fun update() {
         val currentTime = System.currentTimeMillis()
         val deltaTime = currentTime - startTime
-        println(deltaTime)
+//        println(deltaTime)
     }
 
     fun stopLighting() {

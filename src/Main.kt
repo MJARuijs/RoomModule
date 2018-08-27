@@ -43,76 +43,91 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
-        val client = SecureClient(server.accept())
-
         while (true) {
-            println("Start of loop")
-            val decodedMessage = client.readMessage()
-            println("lel")
-            val matcher = pattern.matcher(decodedMessage)
 
-            if (matcher.matches()) {
-                val r = matcher.group("r").toFloat()
-                val g = matcher.group("g").toFloat()
-                val b = matcher.group("b").toFloat()
+            val socketChannel = server.accept()
 
-                if (b == -1.0f) {
-                    NotificationLight.stopLighting()
-                    LightController.setXYState(4, previousState)
-                } else {
-                    previousState = LightController.getXYState(4)
-                    NotificationLight.startLighting(Color(r, g, b))
-                    LightController.setState(4, true, Color(r, g, b))
-                }
-            }
+            if (socketChannel != null) {
+                val client = SecureClient(socketChannel)
 
-            NotificationLight.update()
+                while (true) {
 
-            val response: String = when (decodedMessage) {
+//                    println("Start of loop")
+//                    client.read()
+                    if (client.messageAvailable()) {
+                        val decodedMessage = client.message()
+//                        println(decodedMessage)
+//                    println("lel")
+                        val matcher = pattern.matcher(decodedMessage)
 
-                "light_on" -> {
-                    LightController.setState(lampID, true)
-                    getConfiguration()
-                }
-                "light_off" -> {
-                    LightController.setState(lampID, false)
-                    getConfiguration()
-                }
+                        if (matcher.matches()) {
+                            val r = matcher.group("r").toFloat()
+                            val g = matcher.group("g").toFloat()
+                            val b = matcher.group("b").toFloat()
 
-                "socket_power_on" -> hardwareManager.togglePowerSocket(true)
-                "socket_power_off" -> hardwareManager.togglePowerSocket(false)
-                "confirm_socket_off" -> hardwareManager.forceSocketOff()
+                            if (b == -1.0f) {
+                                NotificationLight.stopLighting()
+                                LightController.setXYState(4, previousState)
+                            } else {
+                                previousState = LightController.getXYState(4)
+                                NotificationLight.startLighting(Color(r, g, b))
+                                LightController.setState(4, true, Color(r, g, b))
+                            }
+                        }
 
-                "pc_power_on" -> hardwareManager.togglePC(true)
-                "pc_power_off" -> hardwareManager.togglePC(false)
-                "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
+                        val response: String = when (decodedMessage) {
 
-                "use_motion_sensor_on" -> {
-                    if (getOsName().startsWith("Linux")) {
-                        motionSensor.enabled = true
-                        getConfiguration()
-                    } else "ERR"
-                }
-                "use_motion_sensor_off" -> {
-                    if (getOsName().startsWith("Linux")) {
-                        motionSensor.enabled = false
-                        getConfiguration()
-                    } else "ERR"
-                }
+                            "light_on" -> {
+                                LightController.setState(lampID, true)
+                                getConfiguration()
+                            }
+                            "light_off" -> {
+                                LightController.setState(lampID, false)
+                                getConfiguration()
+                            }
 
-                "get_configuration" -> getConfiguration()
+                            "socket_power_on" -> hardwareManager.togglePowerSocket(true)
+                            "socket_power_off" -> hardwareManager.togglePowerSocket(false)
+                            "confirm_socket_off" -> hardwareManager.forceSocketOff()
 
-                else -> "COMMAND_NOT_SUPPORTED"
-            }
+                            "pc_power_on" -> hardwareManager.togglePC(true)
+                            "pc_power_off" -> hardwareManager.togglePC(false)
+                            "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
 
-            if (response == "PC_STILL_ON") {
-                client.writeMessage(response)
-                continue
+                            "use_motion_sensor_on" -> {
+                                if (getOsName().startsWith("Linux")) {
+                                    motionSensor.enabled = true
+                                    getConfiguration()
+                                } else "ERR"
+                            }
+                            "use_motion_sensor_off" -> {
+                                if (getOsName().startsWith("Linux")) {
+                                    motionSensor.enabled = false
+                                    getConfiguration()
+                                } else "ERR"
+                            }
+
+                            "get_configuration" -> getConfiguration()
+
+                            else -> "COMMAND_NOT_SUPPORTED"
+                        }
+
+                        if (response == "PC_STILL_ON") {
+                            client.writeMessage(response)
+                            continue
 //            } else if (!response.startsWith("configuration")){
 //                response += getModuleConfig()
+                        }
+                        client.writeMessage(response)
+                    }
+
+                    NotificationLight.update()
+
+
+                }
             }
-            client.writeMessage(response)
         }
+
 
     }
 

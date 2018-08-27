@@ -2,20 +2,27 @@ package client
 
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
-import java.nio.charset.StandardCharsets
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util.*
 
 open class EncodedClient(private val channel: SocketChannel): Client {
 
-    private val writeSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
-    private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
+    init {
+        channel.configureBlocking(false)
+    }
+
+    private var message = ByteArray(0)
 
     override fun write(bytes: ByteArray) {
+        if (!channel.isConnected) {
+            return
+        }
 
         val buffer = ByteBuffer.wrap(Base64.getEncoder().encode(bytes))
 
         val bufferSize = buffer.array().size.toString()
-        val size = Base64.getEncoder().encode(bufferSize.toByteArray(StandardCharsets.UTF_8))
+        val size = Base64.getEncoder().encode(bufferSize.toByteArray(UTF_8))
+        val writeSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
 
         // Prepare size buffer
         writeSizeBuffer.clear()
@@ -31,11 +38,16 @@ open class EncodedClient(private val channel: SocketChannel): Client {
         channel.write(buffer)
     }
 
-    @Throws (ClientException::class)
-    override fun read(): ByteBuffer {
+    override fun messageAvailable(): Boolean {
+
+        if (!channel.isConnected) {
+            return false
+        }
 
         // Read size
+        val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
         readSizeBuffer.clear()
+
         val sizeBytesRead = channel.read(readSizeBuffer)
 
         if (sizeBytesRead == -1) {
@@ -45,7 +57,15 @@ open class EncodedClient(private val channel: SocketChannel): Client {
         readSizeBuffer.rewind()
 
         // Read data
-        val size = String(Base64.getDecoder().decode(readSizeBuffer).array(), StandardCharsets.UTF_8).toInt()
+        val size = try {
+            String(Base64.getDecoder().decode(readSizeBuffer).array(), UTF_8).toInt()
+        } catch (e: Exception) {
+            return false
+        }
+
+        if (readSizeBuffer.remaining() != 0) {
+            return false
+        }
 
         if (size > 1000) {
             throw ClientException("Size was too large")
@@ -55,13 +75,24 @@ open class EncodedClient(private val channel: SocketChannel): Client {
         val bytesRead = channel.read(data)
 
         if (bytesRead == -1) {
-            close()
             throw ClientException("client.Client was closed")
         }
 
         data.rewind()
-        return Base64.getDecoder().decode(data)
+
+        try {
+            message = Base64.getDecoder().decode(data).array()
+        } catch (e: Exception) {
+            message = "ERROR".toByteArray(UTF_8)
+            return true
+        }
+
+        return true
     }
+
+    override fun getMessage() = message
+
+//    override fun messageAvailable() = available
 
     override fun close() {
         channel.close()

@@ -4,7 +4,6 @@ import java.nio.channels.SocketChannel
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
-import java.security.SecureRandom
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -27,6 +26,8 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
     private val decryptor = Cipher.getInstance("RSA/ECB/PKCS1Padding")
     private val symmetricKey: SecretKey
 
+    private var message: String = ""
+
     init {
         symmetricKey = symmetricGenerator.generateKey()
 
@@ -36,26 +37,43 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
         write(keyPair.public.encoded)
 
         val keyFactory = KeyFactory.getInstance("RSA")
-        val serverKey = keyFactory.generatePublic(X509EncodedKeySpec(read().array()))
+
+        while (!super.messageAvailable()) {}
+        val serverKey = keyFactory.generatePublic(X509EncodedKeySpec(getMessage()))
 
         encryptor.init(Cipher.PUBLIC_KEY, serverKey)
         decryptor.init(Cipher.PRIVATE_KEY, clientKey)
         println("client initialized")
     }
 
-    fun readMessage(): String {
-        val message = read().array()
-        val key = read().array()
+    fun message() = message
 
-        val decryptedKey = decryptor.doFinal(key)
+    override fun messageAvailable(): Boolean {
+        while (!super.messageAvailable()) {}
+        val clientMessage = getMessage()
 
-        val secretKey = SecretKeySpec(decryptedKey, 0, decryptedKey.size, "AES")
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        while (!super.messageAvailable()) {}
+        val key = getMessage()
 
-        val decryptedMessage = cipher.doFinal(message)
+        if (String(clientMessage) == "ERROR" || String(key) == "ERROR") {
+            writeMessage("ERROR")
+            return false
+        }
 
-        return String(decryptedMessage, UTF_8)
+        return try {
+            val decryptedKey = decryptor.doFinal(key)
+
+            val secretKey = SecretKeySpec(decryptedKey, 0, decryptedKey.size, "AES")
+            val cipher = Cipher.getInstance("AES")
+            cipher.init(Cipher.DECRYPT_MODE, secretKey)
+
+            val decryptedMessage = cipher.doFinal(clientMessage)
+            message = String(decryptedMessage, UTF_8)
+
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun writeMessage(message: String) {

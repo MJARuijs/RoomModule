@@ -6,14 +6,14 @@ import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.nio.charset.StandardCharsets
 
-class ArduinoClient(address: InetSocketAddress): Client {
+class ArduinoClient(address: InetSocketAddress) {
 
     private var channel: SocketChannel = SocketChannel.open(address)
 
     private val writeSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
 
-    override fun write(bytes: ByteArray) {
+    private fun write(bytes: ByteArray) {
 
         // Prepare size buffer
         writeSizeBuffer.clear()
@@ -32,7 +32,7 @@ class ArduinoClient(address: InetSocketAddress): Client {
     }
 
     @Throws(IOException::class)
-    override fun read(): ByteBuffer {
+    fun read(): ByteBuffer {
         return try {
             // Read size
             readSizeBuffer.clear()
@@ -73,11 +73,8 @@ class ArduinoClient(address: InetSocketAddress): Client {
     }
 
     private fun readMessage(): String {
-
         return try {
-            val buffer = read()
-            val bytes = buffer.array()
-            String(bytes, StandardCharsets.UTF_8)
+            String(read().array(), StandardCharsets.UTF_8)
         } catch (e: ClientException) {
             "ERROR"
         }
@@ -93,7 +90,7 @@ class ArduinoClient(address: InetSocketAddress): Client {
         }
     }
 
-    override fun close() {
+    private fun close() {
         channel.close()
     }
 
