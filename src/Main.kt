@@ -2,18 +2,31 @@ import client.ArduinoClient
 import client.SecureClient
 import com.pi4j.io.gpio.*
 import com.pi4j.system.SystemInfo.getOsName
+import light.Color
+import light.LightController
+import light.NotificationLight
+import light.XYState
+import light.rgb.RGBLamp
 import java.net.InetSocketAddress
+import java.util.regex.Pattern
 
 object Main : MotionSensor.MotionSensorCallback {
 
-    private val lightController = LightController()
     private var hardwareManager = HardwareManager()
     private lateinit var motionSensor: MotionSensor
+
+    private const val lampID = 4
+    private var enableLighting = false
+
+    private val pattern = Pattern.compile("(.)+r=(-)?(?<r>\\d+.\\d+), g=(-)?(?<g>\\d+.\\d+), b=(?<b>(-)?\\d+.\\d+)")
+    private lateinit var previousState: XYState
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
+
+        LightController.addLamp(RGBLamp(4))
 
         val server = Server(4444)
         println("Server started")
@@ -33,16 +46,36 @@ object Main : MotionSensor.MotionSensorCallback {
         val client = SecureClient(server.accept())
 
         while (true) {
+            println("Start of loop")
             val decodedMessage = client.readMessage()
+            println("lel")
+            val matcher = pattern.matcher(decodedMessage)
 
-            var response: String = when (decodedMessage) {
+            if (matcher.matches()) {
+                val r = matcher.group("r").toFloat()
+                val g = matcher.group("g").toFloat()
+                val b = matcher.group("b").toFloat()
+
+                if (b == -1.0f) {
+                    NotificationLight.stopLighting()
+                    LightController.setXYState(4, previousState)
+                } else {
+                    previousState = LightController.getXYState(4)
+                    NotificationLight.startLighting(Color(r, g, b))
+                    LightController.setState(4, true, Color(r, g, b))
+                }
+            }
+
+            NotificationLight.update()
+
+            val response: String = when (decodedMessage) {
 
                 "light_on" -> {
-                    lightController.setState(6, true)
+                    LightController.setState(lampID, true)
                     getConfiguration()
                 }
                 "light_off" -> {
-                    lightController.setState(6, false)
+                    LightController.setState(lampID, false)
                     getConfiguration()
                 }
 
@@ -68,14 +101,15 @@ object Main : MotionSensor.MotionSensorCallback {
                 }
 
                 "get_configuration" -> getConfiguration()
+
                 else -> "COMMAND_NOT_SUPPORTED"
             }
 
             if (response == "PC_STILL_ON") {
                 client.writeMessage(response)
                 continue
-            } else if (!response.startsWith("configuration")){
-                response += getModuleConfig()
+//            } else if (!response.startsWith("configuration")){
+//                response += getModuleConfig()
             }
             client.writeMessage(response)
         }
@@ -95,7 +129,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private fun getModuleConfig(): String {
         val builder = StringBuilder()
-        builder.append("light=${lightController.getState(6)}, ")
+        builder.append("light=${LightController.getState(lampID)}, ")
 
         if (getOsName().startsWith("Linux")) {
             builder.append("use_motion_sensor=${motionSensor.enabled}, ")
@@ -106,7 +140,7 @@ object Main : MotionSensor.MotionSensorCallback {
     }
 
     override fun onStateChanged(state: Boolean) {
-        lightController.setState(6, state)
+        LightController.setState(lampID, state)
     }
 
 }
