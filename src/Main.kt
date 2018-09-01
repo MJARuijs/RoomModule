@@ -23,6 +23,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        println("EZ CLAP LOOOOL")
 
         hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
 
@@ -78,7 +79,7 @@ object Main : MotionSensor.MotionSensorCallback {
                         val response: String = when (decodedMessage) {
 
                             "light_on" -> {
-                                LightController.setState(lampID, true)
+                                LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
                                 getConfiguration()
                             }
                             "light_off" -> {
@@ -144,7 +145,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private fun getModuleConfig(): String {
         val builder = StringBuilder()
-        builder.append("light=${LightController.getState(lampID)}, ")
+        builder.append("light=${LightController.getState(lampID).on}, ")
 
         if (getOsName().startsWith("Linux")) {
             builder.append("use_motion_sensor=${motionSensor.enabled}, ")
