@@ -44,6 +44,8 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
+        LightController.setState(4, true, Color(1200000f, 100f, 254f))
+
         while (true) {
 
             val socketChannel = server.accept()
