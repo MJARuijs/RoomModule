@@ -136,7 +136,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private fun getConfiguration(): String {
         val builder = StringBuilder()
-//        builder.append(getHardwareConfig())
+        builder.append(getHardwareConfig())
         builder.append(getModuleConfig())
         return builder.toString()
     }
