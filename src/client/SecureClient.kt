@@ -29,6 +29,7 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
     private var message: String = ""
 
     init {
+        channel.configureBlocking(false)
         symmetricKey = symmetricGenerator.generateKey()
 
         val keyPair = asymmetricGenerator.generateKeyPair()
@@ -60,6 +61,8 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
             return false
         }
 
+        writeMessage("OK")
+
         return try {
             val decryptedKey = decryptor.doFinal(key)
 
@@ -69,6 +72,7 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
 
             val decryptedMessage = cipher.doFinal(clientMessage)
             message = String(decryptedMessage, UTF_8)
+
 
             true
         } catch (e: Exception) {

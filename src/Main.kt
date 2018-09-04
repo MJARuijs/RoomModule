@@ -44,7 +44,7 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
-        LightController.setState(4, true, Color(1200000f, 100f, 254f))
+//        LightController.setState(4, true, Color(1200000f, 100f, 254f))
 
         while (true) {
 
@@ -59,7 +59,7 @@ object Main : MotionSensor.MotionSensorCallback {
 //                    client.read()
                     if (client.messageAvailable()) {
                         val decodedMessage = client.message()
-                        println(decodedMessage)
+//                        println(decodedMessage)
 //                    println("lel")
                         val matcher = pattern.matcher(decodedMessage)
 
@@ -138,7 +138,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private fun getConfiguration(): String {
         val builder = StringBuilder()
-        builder.append(getHardwareConfig())
+//        builder.append(getHardwareConfig())
         builder.append(getModuleConfig())
         return builder.toString()
     }
