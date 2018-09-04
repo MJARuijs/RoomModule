@@ -23,8 +23,6 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        println("EZ CLAP LOOOOL")
-
         hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
 
         LightController.addLamp(RGBLamp(4))
@@ -44,7 +42,7 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
-//        LightController.setState(4, true, Color(1200000f, 100f, 254f))
+        LightController.setState(4, true, Color(1200000f, 100f, 254f))
 
         while (true) {
 

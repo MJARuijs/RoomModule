@@ -58,7 +58,7 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
 
         if (String(clientMessage) == "ERROR" || String(key) == "ERROR") {
             writeMessage("ERROR")
-            return false
+            return true
         }
 
         writeMessage("OK")
