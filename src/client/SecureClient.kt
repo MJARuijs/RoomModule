@@ -72,7 +72,7 @@ class SecureClient(channel: SocketChannel): EncodedClient(channel) {
             val decryptedMessage = cipher.doFinal(clientMessage)
             message = String(decryptedMessage, UTF_8)
 
-
+            writeMessage("OK")
 
             true
         } catch (e: Exception) {
