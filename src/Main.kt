@@ -23,6 +23,9 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
+
+
+
         hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
 
         LightController.addLamp(RGBLamp(4))
@@ -31,6 +34,15 @@ object Main : MotionSensor.MotionSensorCallback {
         println("Server started")
 
         if (getOsName().startsWith("Linux")) {
+
+            val runTime = Runtime.getRuntime()
+            runTime.exec("gpio mode 18 pwm")
+            runTime.exec("gpio pwm-ms")
+            runTime.exec("gpio pwmc 192")
+            runTime.exec("gpio pwmr 2000")
+            runTime.exec("gpio pwm 1 100")
+            Thread.sleep(5000)
+
             val gpioController = GpioFactory.getInstance()
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
