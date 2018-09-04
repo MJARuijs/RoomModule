@@ -43,6 +43,7 @@ object Main : MotionSensor.MotionSensorCallback {
         }
 
 //        LightController.setState(4, true, Color(1200000f, 100f, 254f))
+        LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
 
         while (true) {
 
