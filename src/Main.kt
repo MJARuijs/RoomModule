@@ -42,7 +42,7 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
-        LightController.setState(4, true, Color(1200000f, 100f, 254f))
+//        LightController.setState(4, true, Color(1200000f, 100f, 254f))
 
         while (true) {
 
@@ -53,12 +53,8 @@ object Main : MotionSensor.MotionSensorCallback {
 
                 while (true) {
 
-//                    println("Start of loop")
-//                    client.read()
                     if (client.messageAvailable()) {
                         val decodedMessage = client.message()
-//                        println(decodedMessage)
-//                    println("lel")
                         val matcher = pattern.matcher(decodedMessage)
 
                         if (matcher.matches()) {
@@ -116,22 +112,17 @@ object Main : MotionSensor.MotionSensorCallback {
                         if (response == "PC_STILL_ON") {
                             client.writeMessage(response)
                             continue
-//            } else if (!response.startsWith("configuration")){
-//                response += getModuleConfig()
                         }
                         println(response)
                         println()
+                        Thread.sleep(50)
                         client.writeMessage(response)
                     }
 
                     NotificationLight.update()
-
-
                 }
             }
         }
-
-
     }
 
     private fun getConfiguration(): String {
