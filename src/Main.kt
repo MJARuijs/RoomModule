@@ -36,7 +36,7 @@ object Main : MotionSensor.MotionSensorCallback {
         if (getOsName().startsWith("Linux")) {
 
             val runTime = Runtime.getRuntime()
-            runTime.exec("gpio mode 18 pwm")
+            runTime.exec("gpio mode 1 pwm")
             runTime.exec("gpio pwm-ms")
             runTime.exec("gpio pwmc 192")
             runTime.exec("gpio pwmr 2000")
