@@ -59,7 +59,7 @@ object Main : MotionSensor.MotionSensorCallback {
 //                    client.read()
                     if (client.messageAvailable()) {
                         val decodedMessage = client.message()
-//                        println(decodedMessage)
+                        println(decodedMessage)
 //                    println("lel")
                         val matcher = pattern.matcher(decodedMessage)
 
@@ -121,6 +121,8 @@ object Main : MotionSensor.MotionSensorCallback {
 //            } else if (!response.startsWith("configuration")){
 //                response += getModuleConfig()
                         }
+                        println(response)
+                        println()
                         client.writeMessage(response)
                     }
 
