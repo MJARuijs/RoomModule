@@ -8,6 +8,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
+    private var checkPresence = false
 
     fun update() {
         if (!enabled) {
@@ -18,6 +19,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
 
         if (sensorPin.isHigh) {
             lastMovementDetected = currentTime
+            checkPresence = false
 
             if (!movementDetected) {
                 movementDetected = true
@@ -26,6 +28,11 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
         } else if (movementDetected && sensorPin.isLow) {
 
             if (currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
+                checkPresence = true
+            }
+
+            if (checkPresence) {
+                checkPresence = false
                 println("CHECKING")
                 Thread {
                     val runTime = Runtime.getRuntime()
