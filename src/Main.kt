@@ -53,7 +53,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
             val gpioController = GpioFactory.getInstance()
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
-            val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_09)
+            val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
 
             Thread {
