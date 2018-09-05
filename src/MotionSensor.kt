@@ -32,7 +32,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val power
             }
         } else if (movementDetected && sensorPin.isLow) {
 
-            if (!presenceChecked && currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
+            if (!presenceChecked && currentTime > lastMovementDetected + 8000) {
                 Thread {
                     println("CHECKING")
                     powerPin.setState(false)
@@ -59,9 +59,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val power
                     println("DONE")
                 }.start()
                 presenceChecked = true
-            }
-
-            if (currentTime > lastMovementDetected + LIGHT_OFF_DELAY) {
+            } else if (currentTime > lastMovementDetected + LIGHT_OFF_DELAY) {
                 movementDetected = false
                 callback.onStateChanged(false)
             }
