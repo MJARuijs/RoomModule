@@ -45,7 +45,7 @@ object Main : MotionSensor.MotionSensorCallback {
             runTime.exec("gpio pwm 1 100")
             Thread.sleep(3000)
 
-            runTime.exec("gpio pwm 1 100")
+            runTime.exec("gpio pwm 1 200")
             Thread.sleep(3000)
 
             val gpioController = GpioFactory.getInstance()
