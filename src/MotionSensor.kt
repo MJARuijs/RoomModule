@@ -30,7 +30,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
     }
 
     companion object {
-        private const val LIGHT_OFF_DELAY = 5000
+        private const val LIGHT_OFF_DELAY = 1000
     }
 
     interface MotionSensorCallback {
