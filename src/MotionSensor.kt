@@ -5,7 +5,7 @@ import kotlin.math.roundToLong
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val powerPin: GpioPinDigitalOutput, private val callback: MotionSensorCallback) {
 
-    var enabled = true
+    var enabled = false
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
