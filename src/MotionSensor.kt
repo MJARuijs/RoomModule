@@ -1,4 +1,6 @@
 import com.pi4j.io.gpio.GpioPinDigitalInput
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
 
@@ -23,7 +25,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
             }
         } else if (movementDetected && sensorPin.isLow) {
 
-            if (currentTime > lastMovementDetected + 0.9f * LIGHT_OFF_DELAY.toFloat()) {
+            if (currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
                 println("CHECKING")
                 Thread {
                     val runTime = Runtime.getRuntime()
