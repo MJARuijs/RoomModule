@@ -143,7 +143,7 @@ object LightController {
             connection.requestMethod = "PUT"
 
             val outputStream = OutputStreamWriter(connection.outputStream)
-            outputStream.write("{\"on\":${xyState.on}, \"xy\":[${xyState.x},${xyState.y}], \"bri\":254}")
+            outputStream.write("{\"on\":${xyState.on}, \"xy\":[${xyState.x},${xyState.y}], \"bri\":${xyState.brightness.toInt()}}")
             outputStream.close()
 
             val ins = connection.inputStream
