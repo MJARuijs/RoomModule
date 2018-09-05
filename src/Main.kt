@@ -20,6 +20,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     private val pattern = Pattern.compile("(.)+r=(-)?(?<r>\\d+.\\d+), g=(-)?(?<g>\\d+.\\d+), b=(?<b>(-)?\\d+.\\d+)")
     private lateinit var previousState: XYState
+    private lateinit var ledPin: GpioPinDigitalOutput
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -32,22 +33,23 @@ object Main : MotionSensor.MotionSensorCallback {
 
         if (getOsName().startsWith("Linux")) {
 
-            val runTime = Runtime.getRuntime()
-            runTime.exec("gpio mode 1 pwm")
-            runTime.exec("gpio pwm-ms")
-            runTime.exec("gpio pwmc 192")
-            runTime.exec("gpio pwmr 2000")
-
-            runTime.exec("gpio pwm 1 152")
-            Thread.sleep(5000)
-
-            runTime.exec("gpio pwm 1 100")
-            Thread.sleep(3000)
-
-            runTime.exec("gpio pwm 1 200")
-            Thread.sleep(3000)
+//            val runTime = Runtime.getRuntime()
+//            runTime.exec("gpio mode 1 pwm")
+//            runTime.exec("gpio pwm-ms")
+//            runTime.exec("gpio pwmc 192")
+//            runTime.exec("gpio pwmr 2000")
+//
+//            runTime.exec("gpio pwm 1 152")
+//            Thread.sleep(5000)
+//
+//            runTime.exec("gpio pwm 1 100")
+//            Thread.sleep(3000)
+//
+//            runTime.exec("gpio pwm 1 200")
+//            Thread.sleep(3000)
 
             val gpioController = GpioFactory.getInstance()
+            ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
 
@@ -166,6 +168,7 @@ object Main : MotionSensor.MotionSensorCallback {
     }
 
     override fun onStateChanged(state: Boolean) {
+        ledPin.setState(state)
         if (state) {
             LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
         } else {
