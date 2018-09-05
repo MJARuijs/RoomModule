@@ -52,17 +52,27 @@ object Main : MotionSensor.MotionSensorCallback {
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
+            ledPin.setState(false)
 
             Thread {
                 while (true) {
                     motionSensor.update()
                 }
             }.start()
+
+            Thread {
+                while (true) {
+                    ledPin.toggle()
+                    Thread.sleep(1000)
+                }
+            }
         }
 
         LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
 
         while (true) {
+
+
 
             val socketChannel = server.accept()
 

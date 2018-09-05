@@ -2,7 +2,7 @@ import com.pi4j.io.gpio.GpioPinDigitalInput
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
 
-    var enabled = true
+    var enabled = false
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
