@@ -22,28 +22,6 @@ object LightController {
 
     private val lock = ReentrantLock()
 
-//    init {
-//        val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/")
-//        val connection = url.openConnection() as HttpURLConnection
-//        connection.doOutput = true
-//        connection.requestMethod = "GET"
-//
-//        val ins = connection.inputStream
-//        val rd = BufferedReader(InputStreamReader(ins))
-//
-//        val builder = StringBuilder()
-//        var line = rd.readLine()
-//
-//        while (line != null) {
-//            builder.append(line).append("\n")
-//            line = rd.readLine()
-//        }
-//
-//        rd.close()
-//
-//        println(builder.toString())
-//    }
-
     fun addLamp(vararg lamps: Lamp) = this.lamps.addAll(lamps)
 
     fun removeLamps(vararg lamps: Lamp) {
@@ -165,7 +143,7 @@ object LightController {
             connection.requestMethod = "PUT"
 
             val outputStream = OutputStreamWriter(connection.outputStream)
-            outputStream.write("{\"on\":${xyState.on}, \"xy\":[${xyState.x},${xyState.y}]}")
+            outputStream.write("{\"on\":${xyState.on}, \"xy\":[${xyState.x},${xyState.y}], \"bri\":${xyState.brightness}}")
             outputStream.close()
 
             val ins = connection.inputStream

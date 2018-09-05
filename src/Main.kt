@@ -23,9 +23,6 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
-
-
-
         hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
 
         LightController.addLamp(RGBLamp(4))
@@ -61,7 +58,6 @@ object Main : MotionSensor.MotionSensorCallback {
             }.start()
         }
 
-//        LightController.setState(4, true, Color(1200000f, 100f, 254f))
         LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
 
         while (true) {
@@ -133,6 +129,7 @@ object Main : MotionSensor.MotionSensorCallback {
                             client.writeMessage(response)
                             continue
                         }
+
                         println(response)
                         println()
                         Thread.sleep(50)
@@ -169,7 +166,12 @@ object Main : MotionSensor.MotionSensorCallback {
     }
 
     override fun onStateChanged(state: Boolean) {
-        LightController.setState(lampID, state)
+        if (state) {
+            LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
+        } else {
+            LightController.setState(lampID, false)
+        }
+
     }
 
 }

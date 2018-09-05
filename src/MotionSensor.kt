@@ -2,7 +2,7 @@ import com.pi4j.io.gpio.GpioPinDigitalInput
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
 
-    var enabled = false
+    var enabled = true
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
@@ -28,20 +28,6 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
             }
         }
     }
-
-//    fun isEnabled(): Boolean {
-//        return enabled
-//    }
-
-//    fun enable(): String {
-//        enabled = true
-//        return "SUCCESS"
-//    }
-//
-//    fun disable(): String {
-//        enabled = false
-//        return "SUCCESS"
-//    }
 
     companion object {
         private const val LIGHT_OFF_DELAY = 5000
