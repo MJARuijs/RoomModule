@@ -27,7 +27,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
         } else if (movementDetected && sensorPin.isLow) {
 
             if (!presenceChecked && currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
-//                Thread {
+                Thread {
                     println("CHECKING")
                     val runTime = Runtime.getRuntime()
                     runTime.exec("gpio mode 1 pwm")
@@ -38,16 +38,16 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
                     //            runTime.exec("gpio pwm 1 152")
                     //            Thread.sleep(5000)
 
-                    runTime.exec("gpio pwm 1 180")
+                    runTime.exec("gpio pwm 1 150")
                     Thread.sleep(250)
 
-                    runTime.exec("gpio pwm 1 220")
+                    runTime.exec("gpio pwm 1 250")
                     Thread.sleep(250)
 
                     runTime.exec("gpio pwm 1 200")
                     Thread.sleep(250)
                     println("DONE")
-//                }.start()
+                }.start()
                 presenceChecked = true
             }
 
@@ -59,7 +59,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
     }
 
     companion object {
-        private const val LIGHT_OFF_DELAY = 5000
+        private const val LIGHT_OFF_DELAY = 10000
     }
 
     interface MotionSensorCallback {
