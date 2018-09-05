@@ -1,5 +1,4 @@
 import com.pi4j.io.gpio.GpioPinDigitalInput
-import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
@@ -8,7 +7,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
-    private var checkPresence = false
+    private var presenceChecked = false
 
     fun update() {
         if (!enabled) {
@@ -19,7 +18,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
 
         if (sensorPin.isHigh) {
             lastMovementDetected = currentTime
-            checkPresence = false
+            presenceChecked = false
 
             if (!movementDetected) {
                 movementDetected = true
@@ -27,13 +26,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
             }
         } else if (movementDetected && sensorPin.isLow) {
 
-            if (currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
-                checkPresence = true
-            }
-
-            if (checkPresence) {
-                checkPresence = false
-                println("CHECKING")
+            if (!presenceChecked && currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
                 Thread {
                     val runTime = Runtime.getRuntime()
 //                    runTime.exec("gpio mode 1 pwm")
@@ -54,6 +47,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
                     Thread.sleep(250)
                     println("DONE")
                 }.start()
+                presenceChecked = true
             }
 
             if (currentTime > lastMovementDetected + LIGHT_OFF_DELAY) {
