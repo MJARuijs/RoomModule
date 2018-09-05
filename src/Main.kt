@@ -59,7 +59,6 @@ object Main : MotionSensor.MotionSensorCallback {
             Thread {
                 while (true) {
                     motionSensor.update()
-                    println("update: ${motionSensorPin.isHigh}")
                 }
             }.start()
         }
