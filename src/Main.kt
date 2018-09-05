@@ -33,20 +33,20 @@ object Main : MotionSensor.MotionSensorCallback {
 
         if (getOsName().startsWith("Linux")) {
 
-//            val runTime = Runtime.getRuntime()
-//            runTime.exec("gpio mode 1 pwm")
-//            runTime.exec("gpio pwm-ms")
-//            runTime.exec("gpio pwmc 192")
-//            runTime.exec("gpio pwmr 2000")
-//
+            val runTime = Runtime.getRuntime()
+            runTime.exec("gpio mode 1 pwm")
+            runTime.exec("gpio pwm-ms")
+            runTime.exec("gpio pwmc 192")
+            runTime.exec("gpio pwmr 2000")
+
 //            runTime.exec("gpio pwm 1 152")
 //            Thread.sleep(5000)
-//
-//            runTime.exec("gpio pwm 1 100")
-//            Thread.sleep(3000)
-//
-//            runTime.exec("gpio pwm 1 200")
-//            Thread.sleep(3000)
+
+            runTime.exec("gpio pwm 1 100")
+            Thread.sleep(3000)
+
+            runTime.exec("gpio pwm 1 100")
+            Thread.sleep(3000)
 
             val gpioController = GpioFactory.getInstance()
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
