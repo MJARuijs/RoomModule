@@ -37,7 +37,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val power
 //                Thread {
                     println("CHECKING")
                     powerPin.setState(false)
-                    Thread.sleep(30)
+                    Thread.sleep(40)
                     powerPin.setState(true)
                     println(sensorPin.isHigh)
 //                    val runTime = Runtime.getRuntime()
