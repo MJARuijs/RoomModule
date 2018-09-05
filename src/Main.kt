@@ -52,19 +52,10 @@ object Main : MotionSensor.MotionSensorCallback {
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
             val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
             motionSensor = MotionSensor(motionSensorPin, this)
-            ledPin.setState(false)
 
             Thread {
                 while (true) {
                     motionSensor.update()
-                }
-            }.start()
-
-            Thread {
-                while (true) {
-                    ledPin.toggle()
-                    println(ledPin.state.isHigh)
-                    Thread.sleep(1000)
                 }
             }.start()
         }
@@ -84,6 +75,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
                     if (client.messageAvailable()) {
                         val decodedMessage = client.message()
+                        println(decodedMessage)
                         val matcher = pattern.matcher(decodedMessage)
 
                         if (matcher.matches()) {
