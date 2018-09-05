@@ -66,7 +66,7 @@ object Main : MotionSensor.MotionSensorCallback {
                     println(ledPin.state.isHigh)
                     Thread.sleep(1000)
                 }
-            }
+            }.start()
         }
 
         LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
