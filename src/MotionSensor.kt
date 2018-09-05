@@ -27,6 +27,7 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val power
             presenceChecked = false
 
             if (!movementDetected) {
+                println("MOVEMENT")
                 movementDetected = true
                 callback.onStateChanged(true)
             }
