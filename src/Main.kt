@@ -176,11 +176,11 @@ object Main : MotionSensor.MotionSensorCallback {
     override fun onStateChanged(state: Boolean) {
         println("State changed!: $state")
         ledPin.setState(state)
-        if (state) {
-            LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
-        } else {
-            LightController.setState(lampID, false)
-        }
+//        if (state) {
+//            LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
+//        } else {
+//            LightController.setState(lampID, false)
+//        }
 
     }
 
