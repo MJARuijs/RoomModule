@@ -42,11 +42,14 @@ object Main : MotionSensor.MotionSensorCallback {
 //            runTime.exec("gpio pwm 1 152")
 //            Thread.sleep(5000)
 
-            runTime.exec("gpio pwm 1 100")
-            Thread.sleep(3000)
+            runTime.exec("gpio pwm 1 180")
+            Thread.sleep(1000)
+
+            runTime.exec("gpio pwm 1 220")
+            Thread.sleep(1000)
 
             runTime.exec("gpio pwm 1 200")
-            Thread.sleep(3000)
+            Thread.sleep(1000)
 
             val gpioController = GpioFactory.getInstance()
             ledPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_08)
