@@ -63,6 +63,7 @@ object Main : MotionSensor.MotionSensorCallback {
             Thread {
                 while (true) {
                     ledPin.toggle()
+                    println(ledPin.state.isHigh)
                     Thread.sleep(1000)
                 }
             }
