@@ -25,9 +25,9 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val power
         if (sensorPin.isHigh) {
             lastMovementDetected = currentTime
             presenceChecked = false
+            println("MOVEMENT")
 
             if (!movementDetected) {
-                println("MOVEMENT")
                 movementDetected = true
                 callback.onStateChanged(true)
             }
