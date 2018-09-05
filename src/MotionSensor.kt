@@ -1,13 +1,19 @@
 import com.pi4j.io.gpio.GpioPinDigitalInput
+import com.pi4j.io.gpio.GpioPinDigitalOutput
+import com.pi4j.io.gpio.RaspiPin
 import kotlin.math.roundToLong
 
-class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callback: MotionSensorCallback) {
+class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val powerPin: GpioPinDigitalOutput, private val callback: MotionSensorCallback) {
 
     var enabled = true
 
     private var lastMovementDetected = 0L
     private var movementDetected = false
     private var presenceChecked = false
+
+    init {
+        powerPin.setState(true)
+    }
 
     fun update() {
         if (!enabled) {
@@ -29,23 +35,27 @@ class MotionSensor(private val sensorPin: GpioPinDigitalInput, private val callb
             if (!presenceChecked && currentTime > (lastMovementDetected.toFloat() + 0.9f * LIGHT_OFF_DELAY.toFloat()).roundToLong()) {
                 Thread {
                     println("CHECKING")
-                    val runTime = Runtime.getRuntime()
-                    runTime.exec("gpio mode 1 pwm")
-                    runTime.exec("gpio pwm-ms")
-                    runTime.exec("gpio pwmc 192")
-                    runTime.exec("gpio pwmr 2000")
-
-                    //            runTime.exec("gpio pwm 1 152")
-                    //            Thread.sleep(5000)
-
-                    runTime.exec("gpio pwm 1 150")
-                    Thread.sleep(250)
-
-                    runTime.exec("gpio pwm 1 250")
-                    Thread.sleep(250)
-
-                    runTime.exec("gpio pwm 1 200")
-                    Thread.sleep(250)
+                    powerPin.setState(false)
+                    Thread.sleep(100)
+                    powerPin.setState(true)
+                    println(sensorPin.isHigh)
+//                    val runTime = Runtime.getRuntime()
+//                    runTime.exec("gpio mode 1 pwm")
+//                    runTime.exec("gpio pwm-ms")
+//                    runTime.exec("gpio pwmc 192")
+//                    runTime.exec("gpio pwmr 2000")
+//
+//                    //            runTime.exec("gpio pwm 1 152")
+//                    //            Thread.sleep(5000)
+//
+//                    runTime.exec("gpio pwm 1 150")
+//                    Thread.sleep(500)
+//
+//                    runTime.exec("gpio pwm 1 250")
+//                    Thread.sleep(500)
+//
+//                    runTime.exec("gpio pwm 1 200")
+//                    Thread.sleep(500)
                     println("DONE")
                 }.start()
                 presenceChecked = true
