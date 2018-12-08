@@ -23,7 +23,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("169.254.175.93", 80)))
+        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("169.254.175.92", 80)))
 
         LightController.addLamp(RGBLamp(4))
 
@@ -44,6 +44,8 @@ object Main : MotionSensor.MotionSensorCallback {
         }
 
         LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
+
+        println(hardwareManager.getConfiguration());
 
         while (true) {
 
