@@ -23,7 +23,7 @@ object Main : MotionSensor.MotionSensorCallback {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("192.168.178.14", 80)))
+        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("169.254.175.92", 80)))
 
         LightController.addLamp(RGBLamp(4))
 
