@@ -1,0 +1,67 @@
+                    if (client.messageAvailable()) {
+                        val decodedMessage = client.message()
+                        println(decodedMessage)
+                        val matcher = pattern.matcher(decodedMessage)
+
+                        if (matcher.matches()) {
+                            val r = matcher.group("r").toFloat()
+                            val g = matcher.group("g").toFloat()
+                            val b = matcher.group("b").toFloat()
+
+                            if (b == -1.0f) {
+                                NotificationLight.stopLighting()
+                                LightController.setXYState(4, previousState)
+                            } else {
+                                previousState = LightController.getXYState(4)
+                                NotificationLight.startLighting(Color(r, g, b))
+                                LightController.setState(4, true, Color(r, g, b))
+                            }
+                        }
+
+                        val response: String = when (decodedMessage) {
+
+                            "light_on" -> {
+                                LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
+                                getConfiguration()
+                            }
+                            "light_off" -> {
+                                LightController.setState(lampID, false)
+                                getConfiguration()
+                            }
+
+                            "socket_power_on" -> hardwareManager.togglePowerSocket(true)
+                            "socket_power_off" -> hardwareManager.togglePowerSocket(false)
+                            "confirm_socket_off" -> hardwareManager.forceSocketOff()
+
+                            "pc_power_on" -> hardwareManager.togglePC(true)
+                            "pc_power_off" -> hardwareManager.togglePC(false)
+                            "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
+
+                            "use_motion_sensor_on" -> {
+                                if (getOsName().startsWith("Linux")) {
+                                    motionSensor.enabled = true
+                                    getConfiguration()
+                                } else "ERR"
+                            }
+                            "use_motion_sensor_off" -> {
+                                if (getOsName().startsWith("Linux")) {
+                                    motionSensor.enabled = false
+                                    getConfiguration()
+                                } else "ERR"
+                            }
+
+                            "get_configuration" -> getConfiguration()
+
+                            else -> "COMMAND_NOT_SUPPORTED"
+                        }
+
+                        if (response == "PC_STILL_ON") {
+                            client.writeMessage(response)
+                            continue
+                        }
+
+                        println(response)
+                        println()
+                        Thread.sleep(50)
+                        client.writeMessage(response)
+                    }

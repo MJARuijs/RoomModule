@@ -5,6 +5,7 @@ import java.nio.channels.SocketChannel
 open class Server(port: Int) {
 
     private val channel = ServerSocketChannel.open()!!
+
     init {
         val address = InetSocketAddress(port)
         channel.configureBlocking(false)

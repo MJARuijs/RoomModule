@@ -1,164 +1,79 @@
-import client.ArduinoClient
-import client.SecureClient
-import com.pi4j.io.gpio.*
-import com.pi4j.system.SystemInfo.getOsName
-import light.Color
 import light.LightController
-import light.NotificationLight
 import light.XYState
 import light.rgb.RGBLamp
-import java.net.InetSocketAddress
-import java.util.regex.Pattern
+import networking.MCUClient
+import networking.MCUType
+import nio.Manager
+import nio.NonBlockingServer
+import java.nio.channels.SocketChannel
+import kotlin.reflect.jvm.internal.impl.load.java.structure.LightClassOriginKind
 
-object Main : MotionSensor.MotionSensorCallback {
+object Main {
 
-    private var hardwareManager = HardwareManager()
-    private lateinit var motionSensor: MotionSensor
 
-    private const val lampID = 4
-    private var enableLighting = false
 
-    private val pattern = Pattern.compile("(.)+r=(-)?(?<r>\\d+.\\d+), g=(-)?(?<g>\\d+.\\d+), b=(?<b>(-)?\\d+.\\d+)")
-    private lateinit var previousState: XYState
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        hardwareManager.addDeviceManager(ArduinoClient(InetSocketAddress("169.254.175.92", 80)))
+    class DemoServer(port: Int, private val manager: Manager) : NonBlockingServer(port) {
 
-        LightController.addLamp(RGBLamp(4))
+        private val clients = HashMap<String, User>()
 
-        val server = Server(4444)
-        println("Server started")
+        override fun onAccept(channel: SocketChannel) {
+            val channelString = channel.toString()
+            val startIndex = channelString.lastIndexOf('/') + 1
+            val endIndex = channelString.lastIndexOf(':')
 
-        if (getOsName().startsWith("Linux")) {
-            val gpioController = GpioFactory.getInstance()
-            val motionSensorPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07)
-            val sensorPowerPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_09)
-            motionSensor = MotionSensor(motionSensorPin, sensorPowerPin, this)
+            val address = channelString.substring(startIndex, endIndex)
+            println(address)
 
-            Thread {
-                while (true) {
-                    motionSensor.update()
-                }
-            }.start()
+            val newMCU = User(address, channel, ::onReadCallback)
+            manager.register(newMCU)
+            clients[address] = newMCU
         }
 
-        LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
+        private fun onReadCallback(message: String, type: MCUType) {
 
-        println(hardwareManager.getConfiguration());
+            val client = clients.entries.find {  (_, client) -> client.type == type } ?.component2() ?: return
 
-        while (true) {
-
-            val socketChannel = server.accept()
-
-            if (socketChannel != null) {
-                val client = SecureClient(socketChannel)
-
-                while (true) {
-
-                    if (client.messageAvailable()) {
-                        val decodedMessage = client.message()
-                        println(decodedMessage)
-                        val matcher = pattern.matcher(decodedMessage)
-
-                        if (matcher.matches()) {
-                            val r = matcher.group("r").toFloat()
-                            val g = matcher.group("g").toFloat()
-                            val b = matcher.group("b").toFloat()
-
-                            if (b == -1.0f) {
-                                NotificationLight.stopLighting()
-                                LightController.setXYState(4, previousState)
-                            } else {
-                                previousState = LightController.getXYState(4)
-                                NotificationLight.startLighting(Color(r, g, b))
-                                LightController.setState(4, true, Color(r, g, b))
-                            }
+            if (message.startsWith("Type: ") && client.type == MCUType.UNKNOWN) {
+                client.type = MCUType.fromString(message)
+                println("Message: $message")
+                println("New client with type: ${client.type}")
+            } else {
+                if (client.type == MCUType.SHUTTER_BUTTONS) {
+                    clients.forEach { _, user ->
+                        if (user.type == MCUType.SHUTTER_CONTROLLER) {
+                            println(user.address)
+                            user.write(message.toByteArray())
                         }
-
-                        val response: String = when (decodedMessage) {
-
-                            "light_on" -> {
-                                LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
-                                getConfiguration()
-                            }
-                            "light_off" -> {
-                                LightController.setState(lampID, false)
-                                getConfiguration()
-                            }
-
-                            "socket_power_on" -> hardwareManager.togglePowerSocket(true)
-                            "socket_power_off" -> hardwareManager.togglePowerSocket(false)
-                            "confirm_socket_off" -> hardwareManager.forceSocketOff()
-
-                            "pc_power_on" -> hardwareManager.togglePC(true)
-                            "pc_power_off" -> hardwareManager.togglePC(false)
-                            "confirm_pc_shutdown" -> hardwareManager.forceShutdownPC()
-
-                            "use_motion_sensor_on" -> {
-                                if (getOsName().startsWith("Linux")) {
-                                    motionSensor.enabled = true
-                                    getConfiguration()
-                                } else "ERR"
-                            }
-                            "use_motion_sensor_off" -> {
-                                if (getOsName().startsWith("Linux")) {
-                                    motionSensor.enabled = false
-                                    getConfiguration()
-                                } else "ERR"
-                            }
-
-                            "get_configuration" -> getConfiguration()
-
-                            else -> "COMMAND_NOT_SUPPORTED"
-                        }
-
-                        if (response == "PC_STILL_ON") {
-                            client.writeMessage(response)
-                            continue
-                        }
-
-                        println(response)
-                        println()
-                        Thread.sleep(50)
-                        client.writeMessage(response)
                     }
-
-                    NotificationLight.update()
                 }
+                println("Message: $message")
             }
         }
+
     }
 
-    private fun getConfiguration(): String {
-        val builder = StringBuilder()
-        builder.append(getHardwareConfig())
-        builder.append(getModuleConfig())
-        return builder.toString()
-    }
-
-    private fun getHardwareConfig(): String {
-        return hardwareManager.getConfiguration()
-    }
-
-    private fun getModuleConfig(): String {
-        val builder = StringBuilder()
-        builder.append("light=${LightController.getState(lampID).on}, ")
-
-        if (getOsName().startsWith("Linux")) {
-            builder.append("use_motion_sensor=${motionSensor.enabled}, ")
-        } else {
-            builder.append("use_motion_sensor=false, ")
+    class User(val address: String, channel: SocketChannel, private val callback: (String, MCUType) -> Unit) : MCUClient(channel) {
+        override fun onRead() {
+            callback(String(read()), type)
         }
-        return builder.toString()
     }
 
-    override fun onStateChanged(state: Boolean) {
-        if (state) {
-            LightController.setXYState(lampID, XYState(true, 254f, 0.4575f, 0.4099f))
-        } else {
-            LightController.setState(lampID, false)
-        }
+    @JvmStatic
+    fun main(arguments: Array<String>) {
+        println("Start of program")
+        val manager = Manager()
+        val thread = Thread(manager, "Manager")
+        thread.start()
+        Thread.sleep(1000)
+
+        println("Manager started")
+        val server = DemoServer(4444, manager)
+        manager.register(server)
+        println("Server started")
+        LightController.addLamp(RGBLamp(4))
+        LightController.setXYState(4, XYState(true, 254.0f, 0.5564f, 0.4098f))
+
     }
 
 }

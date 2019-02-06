@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="RoomModule:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9ea3237e-ac93-49f4-9eb3-e3c7efe3f074" name="Default" comment="Implement lighting">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/Client.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/ClientException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/EncodedClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/MCUClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/MCUType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nio/Manager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nio/NonBlockingClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nio/NonBlockingServer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nio/Registrable.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/nio/Server.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HardwareManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/HardwareManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MotionSensor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/ArduinoClient.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Client.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/ClientException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/EncodedClient.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/SecureClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/networking/SecureClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/light/NotificationLight.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/light/NotificationLight.kt" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Main.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/light/LightController.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1242">
+              <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Server.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
+        <option value="Kotlin Script" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        <option value="$PROJECT_DIR$/src/server/Server.kt" />
+        <option value="$PROJECT_DIR$/src/nio/NonBlockingClient.kt" />
+        <option value="$PROJECT_DIR$/src/nio/Manager.kt" />
+        <option value="$PROJECT_DIR$/src/nio/Demo.kt" />
+        <option value="$PROJECT_DIR$/src/networking/SecureClient.kt" />
+        <option value="$PROJECT_DIR$/src/networking/EncodedClient.kt" />
+        <option value="$PROJECT_DIR$/src/JavaMain.java" />
+        <option value="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+        <option value="$PROJECT_DIR$/src/LightController.kt" />
+        <option value="$PROJECT_DIR$/src/light/LightState.kt" />
+        <option value="$PROJECT_DIR$/src/light/WhiteState.kt" />
+        <option value="$PROJECT_DIR$/src/light/WhiteLamp.kt" />
+        <option value="$PROJECT_DIR$/src/light/RGBState.kt" />
+        <option value="$PROJECT_DIR$/src/light/RGBLamp.kt" />
+        <option value="$PROJECT_DIR$/src/light/Color.kt" />
+        <option value="$PROJECT_DIR$/src/light/rgb/RGBState.kt" />
+        <option value="$PROJECT_DIR$/src/light/rgb/RGBLamp.kt" />
+        <option value="$PROJECT_DIR$/src/light/Lamp.kt" />
+        <option value="$PROJECT_DIR$/src/light/XYState.kt" />
+        <option value="$PROJECT_DIR$/src/Server.kt" />
+        <option value="$PROJECT_DIR$/src/client/Client.kt" />
+        <option value="$PROJECT_DIR$/src/client/ArduinoClient.kt" />
+        <option value="$PROJECT_DIR$/src/client/EncodedClient.kt" />
+        <option value="$PROJECT_DIR$/src/client/SecureClient.kt" />
+        <option value="$PROJECT_DIR$/src/light/LightController.kt" />
+        <option value="$PROJECT_DIR$/src/lol.kts" />
+        <option value="$PROJECT_DIR$/src/Main2.java" />
+        <option value="$PROJECT_DIR$/src/Main2.kt" />
+        <option value="$PROJECT_DIR$/backup.txt" />
+        <option value="$PROJECT_DIR$/src/MotionSensor.kt" />
+        <option value="$PROJECT_DIR$/src/Demo.kt" />
+        <option value="$PROJECT_DIR$/src/HardwareManager.kt" />
+        <option value="$PROJECT_DIR$/src/light/NotificationLight.kt" />
+        <option value="$PROJECT_DIR$/src/Main.kt" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1987" />
+    <option name="y" value="27" />
+    <option name="width" value="2493" />
+    <option name="height" value="1053" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="light" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="nio" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="roommodule" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549461680621" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/runnable" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\runnable" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="server" />
+      <recent name="" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="light.white" />
+      <recent name="light.rgb" />
+      <recent name="light" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\src" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Kotlin.Main">
+    <configuration name="GpioTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GpioTest" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="JavaMain" />
+      <module name="Room Module" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RoomModule.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/runnable/RoomModule.jar" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Main" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="Room Module" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.GpioTest" />
+      <item itemvalue="Application.JavaMain" />
+      <item itemvalue="JAR Application.RoomModule.jar" />
+      <item itemvalue="Kotlin.Main" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.Main" />
+        <item itemvalue="Application.JavaMain" />
+        <item itemvalue="Application.GpioTest" />
+        <item itemvalue="JAR Application.RoomModule.jar" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9ea3237e-ac93-49f4-9eb3-e3c7efe3f074" name="Default" comment="" />
+      <created>1525981852198</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1525981852198</updated>
+      <workItem from="1525981853395" duration="141000" />
+      <workItem from="1526019827920" duration="19081000" />
+      <workItem from="1526044385154" duration="2894000" />
+      <workItem from="1526051560630" duration="1935000" />
+      <workItem from="1526108891106" duration="8060000" />
+      <workItem from="1526123589675" duration="306000" />
+      <workItem from="1526141610747" duration="1028000" />
+      <workItem from="1526209167996" duration="309000" />
+      <workItem from="1526209917525" duration="1128000" />
+      <workItem from="1526212464771" duration="2525000" />
+      <workItem from="1526216252626" duration="269000" />
+      <workItem from="1526216894992" duration="386000" />
+      <workItem from="1526223283659" duration="609000" />
+      <workItem from="1532686025063" duration="3044000" />
+      <workItem from="1533384796537" duration="784000" />
+      <workItem from="1533820808742" duration="196000" />
+      <workItem from="1534519480861" duration="4651000" />
+      <workItem from="1534577878844" duration="3882000" />
+      <workItem from="1534586429785" duration="799000" />
+      <workItem from="1534589816979" duration="783000" />
+      <workItem from="1534590866390" duration="1351000" />
+      <workItem from="1534764610219" duration="295000" />
+      <workItem from="1534840568955" duration="18389000" />
+      <workItem from="1534865957689" duration="914000" />
+      <workItem from="1535359004063" duration="21029000" />
+      <workItem from="1535471243968" duration="4071000" />
+      <workItem from="1535800874382" duration="3330000" />
+      <workItem from="1535820096799" duration="1110000" />
+      <workItem from="1535977431122" duration="868000" />
+      <workItem from="1536046282284" duration="5377000" />
+      <workItem from="1536074785760" duration="6146000" />
+      <workItem from="1536135976776" duration="16955000" />
+      <workItem from="1536225232531" duration="14000" />
+      <workItem from="1536865562993" duration="606000" />
+      <workItem from="1536906472942" duration="3779000" />
+      <workItem from="1539414312194" duration="940000" />
+      <workItem from="1544288192902" duration="733000" />
+      <workItem from="1544289072466" duration="1442000" />
+      <workItem from="1544552292902" duration="1330000" />
+      <workItem from="1546437209996" duration="32000" />
+      <workItem from="1548670496508" duration="75000" />
+      <workItem from="1548688366002" duration="24000" />
+      <workItem from="1548688402671" duration="602000" />
+      <workItem from="1548689574943" duration="2000" />
+      <workItem from="1548753600010" duration="47000" />
+      <workItem from="1548934651343" duration="379000" />
+      <workItem from="1549008568786" duration="6000" />
+      <workItem from="1549043292800" duration="291000" />
+      <workItem from="1549086130855" duration="1072000" />
+      <workItem from="1549455932217" duration="1353000" />
+      <workItem from="1549472487180" duration="258000" />
+    </task>
+    <task id="LOCAL-00060" summary="Implement lighting">
+      <created>1536090912828</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1536090912828</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Implement lighting">
+      <created>1536094042528</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1536094042528</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Implement lighting">
+      <created>1536094161194</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1536094161194</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Implement lighting">
+      <created>1536094368962</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1536094368962</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Implement lighting">
+      <created>1536136647106</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1536136647107</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Implement lighting">
+      <created>1536138001501</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138001501</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Implement lighting">
+      <created>1536138209560</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138209560</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Implement lighting">
+      <created>1536138481950</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138481950</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Implement lighting">
+      <created>1536138656777</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138656777</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Implement lighting">
+      <created>1536138721275</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138721275</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Implement lighting">
+      <created>1536138978493</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1536138978493</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Implement lighting">
+      <created>1536139274571</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1536139274571</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Implement lighting">
+      <created>1536139361008</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1536139361008</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Implement lighting">
+      <created>1536141846174</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1536141846174</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Implement lighting">
+      <created>1536141940507</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1536141940507</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Implement lighting">
+      <created>1536142033351</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1536142033351</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Implement lighting">
+      <created>1536142760356</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1536142760356</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Implement lighting">
+      <created>1536142844312</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1536142844312</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Implement lighting">
+      <created>1536143149689</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1536143149689</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Implement lighting">
+      <created>1536144035978</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1536144035978</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Implement lighting">
+      <created>1536144356335</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1536144356335</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Implement lighting">
+      <created>1536144695752</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1536144695752</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Implement lighting">
+      <created>1536144717637</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1536144717637</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Implement lighting">
+      <created>1536144904178</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1536144904178</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Implement lighting">
+      <created>1536145108594</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1536145108594</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Implement lighting">
+      <created>1536145267096</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1536145267096</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Implement lighting">
+      <created>1536146117463</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1536146117463</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Implement lighting">
+      <created>1536146232236</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1536146232236</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Implement lighting">
+      <created>1536146599065</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1536146599065</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Implement lighting">
+      <created>1536146961061</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1536146961061</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Implement lighting">
+      <created>1536147962628</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1536147962628</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Implement lighting">
+      <created>1536148102789</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148102789</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Implement lighting">
+      <created>1536148228246</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148228246</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Implement lighting">
+      <created>1536148301373</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148301373</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Implement lighting">
+      <created>1536148626988</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148626988</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Implement lighting">
+      <created>1536148706376</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148706376</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Implement lighting">
+      <created>1536148835241</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1536148835241</updated>
+    </task>
+    <task id="LOCAL-00097" summary="Implement lighting">
+      <created>1536149065633</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149065633</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Implement lighting">
+      <created>1536149230320</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149230320</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Implement lighting">
+      <created>1536149297281</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149297282</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Implement lighting">
+      <created>1536149392827</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149392827</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Implement lighting">
+      <created>1536149479547</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149479547</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Implement lighting">
+      <created>1536149607955</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149607955</updated>
+    </task>
+    <task id="LOCAL-00103" summary="Implement lighting">
+      <created>1536149716029</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149716029</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Implement lighting">
+      <created>1536149824824</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1536149824825</updated>
+    </task>
+    <task id="LOCAL-00105" summary="Implement lighting">
+      <created>1536150398827</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1536150398827</updated>
+    </task>
+    <task id="LOCAL-00106" summary="Implement lighting">
+      <created>1544288250420</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1544288250421</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Implement lighting">
+      <created>1544289052219</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1544289052219</updated>
+    </task>
+    <task id="LOCAL-00108" summary="Implement lighting">
+      <created>1544289250281</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1544289250282</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="145630000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1987" y="27" width="2493" height="1053" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17449939" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.32838982" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.329718" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.31515813" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Maven" order="9" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14570312" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.32943678" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="Add Runnable" />
+    <MESSAGE value="Implement lighting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement lighting" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+    <entry file="file://$PROJECT_DIR$/src/networking/ArduinoClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/networking/Client.kt" />
+    <entry file="file://$PROJECT_DIR$/src/networking/ClientException.kt" />
+    <entry file="file://$PROJECT_DIR$/src/networking/MessageClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/Main.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/Manager.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingServer.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/Registerable.kt" />
+    <entry file="file://$PROJECT_DIR$/src/nio/Server.kt" />
+    <entry file="file://$PROJECT_DIR$/src/networking/EncodedClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/networking/SecureClient.kt" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa13180.22016/README.md" />
+    <entry file="jar://$PROJECT_DIR$/lib/pi4j-example-sources.jar!/GpioTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="44" column="13" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/pi4j-example-sources.jar!/bananapro/build">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-510" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JavaMain.java" />
+    <entry file="jar://$PROJECT_DIR$/lib/pi4j-core-sources.jar!/com/pi4j/io/gpio/GpioController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="134" column="25" selection-start-line="134" selection-start-column="25" selection-end-line="134" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/nio/channels/SocketChannel.java" />
+    <entry file="file://$PROJECT_DIR$/src/client/ClientException.kt" />
+    <entry file="file://$PROJECT_DIR$/src/light/white/WhiteLamp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="56" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/Color.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/State.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/white/WhiteState.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/rgb/RGBState.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/rgb/RGBLamp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="32" lean-forward="true" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/Lamp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="90" selection-start-line="5" selection-start-column="90" selection-end-line="5" selection-end-column="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/nio/channels/ServerSocketChannel.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Byte.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Integer.java" />
+    <entry file="file://$PROJECT_DIR$/src/client/Client.kt" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Runtime.java" />
+    <entry file="file://$PROJECT_DIR$/src/light/XYState.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="54" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/pi4j-core-sources.jar!/com/pi4j/io/gpio/PinState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="42" column="7" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/pi4j-core-sources.jar!/com/pi4j/io/gpio/GpioPinDigital.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/app_array.xml" />
+    <entry file="file://$PROJECT_DIR$/src/lol.kts" />
+    <entry file="file://$PROJECT_DIR$/src/MotionSensor.kt" />
+    <entry file="file://$PROJECT_DIR$/src/client/ArduinoClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/client/SecureClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/client/EncodedClient.kt" />
+    <entry file="file://$PROJECT_DIR$/src/Main2.kt" />
+    <entry file="file://$PROJECT_DIR$/backup.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="881">
+          <caret line="66" column="21" selection-start-line="66" selection-start-column="21" selection-end-line="66" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HardwareManager.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="7" lean-forward="true" selection-start-column="2" selection-end-line="33" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/NotificationLight.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/LightController.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1242">
+          <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>RoomModule:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Room Module</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>KotlinJavaRuntime</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
