@@ -24,12 +24,6 @@ object LightController {
 
     fun addLamp(vararg lamps: Lamp) = this.lamps.addAll(lamps)
 
-    fun removeLamps(vararg lamps: Lamp) {
-        for (lamp in lamps) {
-            this.lamps.removeIf{this.lamps.contains(lamp)}
-        }
-    }
-
     fun setState(id: Int, newState: Boolean, color: Color = Color()) {
         while (lock.isLocked) {}
         lock.lock()
@@ -78,7 +72,7 @@ object LightController {
         return getState(lamp)
     }
 
-    fun getState(lamp: Lamp): State {
+    private fun getState(lamp: Lamp): State {
         while (lock.isLocked) {}
         lock.lock()
         try {
@@ -125,83 +119,4 @@ object LightController {
         }
     }
 
-    fun setXYState(lampID: Int, xyState: XYState) {
-        val lamp = lamps.find { lamp -> lamp.id == lampID } ?: throw IllegalArgumentException("No lamp with ID: $lampID was found")
-
-        while (lock.isLocked) {}
-        lock.lock()
-        try {
-            lamp.state.on = xyState.on
-
-            if (lamp is RGBLamp) {
-                (lamp.state as RGBState).color
-            }
-
-            val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/${lamp.id}/state/")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.doOutput = true
-            connection.requestMethod = "PUT"
-
-            val outputStream = OutputStreamWriter(connection.outputStream)
-            outputStream.write("{\"on\":${xyState.on}, \"xy\":[${xyState.x},${xyState.y}], \"bri\":${xyState.brightness.toInt()}}")
-            outputStream.close()
-
-            val ins = connection.inputStream
-            val rd = BufferedReader(InputStreamReader(ins))
-
-            val builder = StringBuilder()
-            var line = rd.readLine()
-
-            while (line != null) {
-                builder.append(line).append("\n")
-                line = rd.readLine()
-            }
-
-            rd.close()
-        } finally {
-            lock.unlock()
-        }
-    }
-
-    fun getXYState(lampID: Int): XYState {
-        val lamp = lamps.find { lamp -> lamp.id == lampID } ?: throw IllegalArgumentException("No lamp with ID: $lampID was found")
-
-        while (lock.isLocked) {}
-        lock.lock()
-
-        try {
-            val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/${lamp.id}")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.doOutput = true
-            connection.requestMethod = "GET"
-
-            val ins = connection.inputStream
-            val rd = BufferedReader(InputStreamReader(ins))
-
-            val builder = StringBuilder()
-            var line = rd.readLine()
-
-            while (line != null) {
-                builder.append(line).append("\n")
-                line = rd.readLine()
-            }
-
-            rd.close()
-
-            val pattern = Pattern.compile("(.)+\\{\"on\":(?<on>true|false),\"bri\":(?<bri>[0-9]+)(.)+\"xy\":\\[(?<x>\\d+.\\d+),(\n?)(?<y>\\d+.\\d+)(.)+")
-            val matcher = pattern.matcher(builder.toString().trim())
-
-            if (matcher.matches()) {
-                val on = matcher.group("on")!!.toBoolean()
-                val bri = matcher.group("bri").toFloat()
-                val x = matcher.group("x").toFloat()
-                val y = matcher.group("y").toFloat()
-                return XYState(on, bri, x, y)
-            } else {
-                throw IllegalArgumentException("Invalid RGB state")
-            }
-        } finally {
-            lock.unlock()
-        }
-    }
 }

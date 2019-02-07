@@ -10,6 +10,8 @@ abstract class MCUClient(channel: SocketChannel): NonBlockingClient(channel) {
 
     var type = MCUType.UNKNOWN
 
+    fun write(message: String) = write(message.toByteArray())
+
     override fun write(bytes: ByteArray) {
         val buffer = ByteBuffer.allocate(bytes.size + 4)
         buffer.putInt(bytes.size)
