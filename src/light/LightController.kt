@@ -24,7 +24,7 @@ object LightController {
 
     fun addLamp(vararg lamps: Lamp) = this.lamps.addAll(lamps)
 
-    fun setState(id: Int, newState: Boolean, color: Color = Color()) {
+    fun setState(id: Int, newState: Boolean, color: Color) {
         while (lock.isLocked) {}
         lock.lock()
         try {
@@ -45,7 +45,9 @@ object LightController {
             if (lamp is WhiteLamp) {
                 outputStream.write("{\"on\":$newState}")
             } else {
-                outputStream.write("{\"on\":$newState, \"sat\":${color.g.roundToInt()}, \"bri\":${color.b.roundToInt()}, \"hue\":${color.r.roundToInt()}}")
+                if (color is HSBColor) {
+                    outputStream.write("{\"on\":$newState, \"sat\":${color.saturation.roundToInt()}, \"bri_inc\":${color.brightness.roundToInt()}, \"hue\":${color.hue.roundToInt()}}")
+                }
             }
             outputStream.close()
 
@@ -65,6 +67,43 @@ object LightController {
             lock.unlock()
         }
 
+    }
+
+    fun sendCommand(id: Int, color: HSBColor, command: String) {
+        while (lock.isLocked) {}
+        lock.lock()
+        try {
+            val lamp = lamps.find { lamp -> lamp.id == id } ?: return
+
+            if (lamp is RGBLamp) {
+                (lamp.state as RGBState).color
+            }
+
+            val url = URL("http://$HUE_IP/api/$HUESERNAME/lights/${lamp.id}/state/")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doOutput = true
+            connection.requestMethod = "PUT"
+
+            val outputStream = OutputStreamWriter(connection.outputStream)
+            outputStream.write(command)
+
+            outputStream.close()
+
+            val ins = connection.inputStream
+            val rd = BufferedReader(InputStreamReader(ins))
+
+            val builder = StringBuilder()
+            var line = rd.readLine()
+
+            while (line != null) {
+                builder.append(line).append("\n")
+                line = rd.readLine()
+            }
+
+            rd.close()
+        } finally {
+            lock.unlock()
+        }
     }
 
     fun getState(lampID: Int): State {
@@ -109,7 +148,7 @@ object LightController {
                     val sat = matcher.group("sat").toFloat()
                     val bri = matcher.group("bri").toFloat()
                     val hue = matcher.group("hue").toFloat()
-                    return RGBState(on, Color(sat, bri, hue))
+                    return RGBState(on, HSBColor(sat, bri, hue))
                 } else {
                     throw IllegalArgumentException("Invalid RGB state")
                 }

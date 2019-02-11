@@ -4,21 +4,23 @@ import nio.NonBlockingClient
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
-abstract class MCUClient(channel: SocketChannel): NonBlockingClient(channel) {
+class MCUClient(channel: SocketChannel, private val callback: (String, MCUType) -> Unit): NonBlockingClient(channel) {
 
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
 
     var type = MCUType.UNKNOWN
-
-    fun write(message: String) = write(message.toByteArray())
 
     override fun write(bytes: ByteArray) {
         val buffer = ByteBuffer.allocate(bytes.size + 4)
         buffer.putInt(bytes.size)
         buffer.put(bytes)
         buffer.rewind()
-
+        println("Writing: ${String(bytes)}. To : $type")
         channel.write(buffer)
+    }
+
+    override fun onRead() {
+        callback(readMessage(), type)
     }
 
     override fun read(): ByteArray {

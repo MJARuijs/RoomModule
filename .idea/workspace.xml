@@ -7,14 +7,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ea3237e-ac93-49f4-9eb3-e3c7efe3f074" name="Default" comment="Implement lighting">
+      <change afterPath="$PROJECT_DIR$/src/light/HSBColor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/light/RGBColor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/networking/HomeClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onAccept$newMCU$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onAccept$newMCU$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onReadCallback$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onReadCallback$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Main$User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onAccept$newMCU$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onReadCallback$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onReadCallback$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer$onReadCallback$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$DemoServer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main$User.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Room Module/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/light/Color.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/light/Color.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/light/Lamp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/light/Lamp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/light/LightController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/light/LightController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/networking/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/networking/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/networking/MCUClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/networking/MCUClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Room Module/nio/NonBlockingClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Room Module/nio/NonBlockingClient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/light/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/light/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/light/Lamp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/light/Lamp.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/light/LightController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/light/LightController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/networking/Client.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/networking/Client.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/networking/MCUClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/networking/MCUClient.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -25,39 +41,41 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.56109524">
+    <splitter split-orientation="horizontal" split-proportion="0.44146827">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Main.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="36">
-                  <caret line="38" column="16" lean-forward="true" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
-                  <folding>
-                    <element signature="e#0#232#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="398">
+                  <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/util/Calendar.java">
+            <entry file="file://$PROJECT_DIR$/src/networking/MCUType.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="203">
-                  <caret line="520" column="28" selection-start-line="520" selection-start-column="28" selection-end-line="520" selection-end-column="28" />
+                <state relative-caret-position="344">
+                  <caret line="30" column="31" lean-forward="true" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/util/Date.java">
+            <entry file="file://$PROJECT_DIR$/src/networking/MCUClient.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="141">
-                  <caret line="785" column="21" lean-forward="true" selection-start-line="785" selection-start-column="21" selection-end-line="785" selection-end-column="21" />
-                  <folding>
-                    <element signature="e#33981#33982#0" expanded="true" />
-                    <element signature="e#34026#34027#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="576">
+                  <caret line="34" selection-start-line="34" selection-end-line="34" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/networking/Client.kt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="162">
+                  <caret line="9" selection-start-line="9" selection-end-line="9" />
                 </state>
               </provider>
             </entry>
@@ -67,10 +85,43 @@
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/light/LightController.kt">
+            <entry file="file://$PROJECT_DIR$/src/Server.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="216">
-                  <caret line="62" column="22" lean-forward="true" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
+                <state relative-caret-position="200">
+                  <caret line="73" column="24" lean-forward="true" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="24" />
+                  <folding>
+                    <element signature="e#0#210#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/networking/HomeClient.kt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1080">
+                  <caret line="62" selection-start-line="62" selection-end-line="62" />
+                  <folding>
+                    <element signature="e#20#114#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/nio/Manager.kt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="738">
+                  <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingClient.kt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="90">
+                  <caret line="8" selection-start-line="8" selection-end-line="8" />
                 </state>
               </provider>
             </entry>
@@ -82,12 +133,20 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin Object" />
         <option value="Kotlin Script" />
         <option value="Class" />
+        <option value="Kotlin Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>User</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>MCUClient</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -101,7 +160,6 @@
         <option value="$PROJECT_DIR$/src/nio/Manager.kt" />
         <option value="$PROJECT_DIR$/src/nio/Demo.kt" />
         <option value="$PROJECT_DIR$/src/networking/SecureClient.kt" />
-        <option value="$PROJECT_DIR$/src/networking/EncodedClient.kt" />
         <option value="$PROJECT_DIR$/src/JavaMain.java" />
         <option value="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/src/LightController.kt" />
@@ -110,12 +168,9 @@
         <option value="$PROJECT_DIR$/src/light/WhiteLamp.kt" />
         <option value="$PROJECT_DIR$/src/light/RGBState.kt" />
         <option value="$PROJECT_DIR$/src/light/RGBLamp.kt" />
-        <option value="$PROJECT_DIR$/src/light/Color.kt" />
         <option value="$PROJECT_DIR$/src/light/rgb/RGBState.kt" />
         <option value="$PROJECT_DIR$/src/light/rgb/RGBLamp.kt" />
-        <option value="$PROJECT_DIR$/src/light/Lamp.kt" />
         <option value="$PROJECT_DIR$/src/light/XYState.kt" />
-        <option value="$PROJECT_DIR$/src/Server.kt" />
         <option value="$PROJECT_DIR$/src/client/Client.kt" />
         <option value="$PROJECT_DIR$/src/client/ArduinoClient.kt" />
         <option value="$PROJECT_DIR$/src/client/EncodedClient.kt" />
@@ -128,17 +183,25 @@
         <option value="$PROJECT_DIR$/src/Demo.kt" />
         <option value="$PROJECT_DIR$/src/HardwareManager.kt" />
         <option value="$PROJECT_DIR$/src/light/NotificationLight.kt" />
+        <option value="$PROJECT_DIR$/src/light/Color.kt" />
+        <option value="$PROJECT_DIR$/src/light/HSBColor.kt" />
+        <option value="$PROJECT_DIR$/src/light/RGBColor.kt" />
+        <option value="$PROJECT_DIR$/src/light/Lamp.kt" />
         <option value="$PROJECT_DIR$/src/light/LightController.kt" />
-        <option value="$PROJECT_DIR$/src/networking/MCUClient.kt" />
+        <option value="$PROJECT_DIR$/src/networking/EncodedClient.kt" />
+        <option value="$PROJECT_DIR$/src/networking/Client.kt" />
+        <option value="$PROJECT_DIR$/src/networking/HomeClient.kt" />
         <option value="$PROJECT_DIR$/src/Main.kt" />
+        <option value="$PROJECT_DIR$/src/networking/MCUClient.kt" />
+        <option value="$PROJECT_DIR$/src/Server.kt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2173" />
+    <option name="x" value="1987" />
     <option name="y" value="27" />
-    <option name="width" value="1843" />
-    <option name="height" value="810" />
+    <option name="width" value="2493" />
+    <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -147,7 +210,49 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="networking" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RoomModule" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Room Module" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="nio" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
@@ -156,7 +261,7 @@
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="roommodule" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549551002216" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549892415075" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -167,9 +272,10 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\src" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/runnable" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\runnable" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="server" />
@@ -184,10 +290,9 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/runnable" />
-      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\runnable" />
-      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="C:\Users\Marc Ruijs\Documents\Java Projects\Room Module\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -333,7 +438,14 @@
       <workItem from="1549455932217" duration="1353000" />
       <workItem from="1549472487180" duration="5884000" />
       <workItem from="1549528909253" duration="8693000" />
-      <workItem from="1549553271683" duration="3716000" />
+      <workItem from="1549553271683" duration="3985000" />
+      <workItem from="1549606528104" duration="4125000" />
+      <workItem from="1549702809632" duration="25000" />
+      <workItem from="1549702857245" duration="5060000" />
+      <workItem from="1549790217941" duration="570000" />
+      <workItem from="1549791525179" duration="8846000" />
+      <workItem from="1549877458633" duration="10226000" />
+      <workItem from="1549898003910" duration="2022000" />
     </task>
     <task id="LOCAL-00060" summary="Implement lighting">
       <created>1536090912828</created>
@@ -682,30 +794,30 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="163665000" />
+    <option name="totallyTimeSpent" value="194808000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1987" y="27" width="2493" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1765427" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2407305" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.32824427" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.32715377" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.3053435" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.3217012" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.3129771" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3293348" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32861805" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -760,17 +872,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Implement lighting" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/networking/Client.kt" />
-    <entry file="file://$PROJECT_DIR$/src/networking/ClientException.kt" />
-    <entry file="file://$PROJECT_DIR$/src/networking/MessageClient.kt" />
-    <entry file="file://$PROJECT_DIR$/src/nio/Main.kt" />
-    <entry file="file://$PROJECT_DIR$/src/nio/Manager.kt" />
-    <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingClient.kt" />
-    <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingServer.kt" />
-    <entry file="file://$PROJECT_DIR$/src/nio/Registerable.kt" />
     <entry file="file://$PROJECT_DIR$/src/nio/Server.kt" />
-    <entry file="file://$PROJECT_DIR$/src/networking/EncodedClient.kt" />
-    <entry file="file://$PROJECT_DIR$/src/networking/SecureClient.kt" />
     <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa13180.22016/README.md" />
     <entry file="jar://$PROJECT_DIR$/lib/pi4j-example-sources.jar!/GpioTest.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -822,13 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/light/Lamp.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="90" selection-start-line="5" selection-start-column="90" selection-end-line="5" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/nio/channels/ServerSocketChannel.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Byte.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Integer.java" />
@@ -862,13 +957,6 @@
     <entry file="file://$PROJECT_DIR$/src/client/SecureClient.kt" />
     <entry file="file://$PROJECT_DIR$/src/client/EncodedClient.kt" />
     <entry file="file://$PROJECT_DIR$/src/Main2.kt" />
-    <entry file="file://$PROJECT_DIR$/backup.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="881">
-          <caret line="66" column="21" selection-start-line="66" selection-start-column="21" selection-end-line="66" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/HardwareManager.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -883,13 +971,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/light/State.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -897,38 +978,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/light/rgb/RGBState.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="5" column="43" lean-forward="true" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/light/Color.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
-          <caret line="2" column="79" lean-forward="true" selection-start-line="2" selection-start-column="79" selection-end-line="2" selection-end-column="79" />
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/networking/MCUType.kt">
+    <entry file="file://$PROJECT_DIR$/src/light/rgb/RGBState.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="72">
+          <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/networking/MCUClient.kt">
+    <entry file="file://$PROJECT_DIR$/src/light/RGBColor.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="46" selection-start-line="12" selection-start-column="46" selection-end-line="12" selection-end-column="46" />
+        <state relative-caret-position="36">
+          <caret line="2" column="87" selection-start-line="2" selection-start-column="87" selection-end-line="2" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/HSBColor.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/Lamp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" selection-start-line="6" selection-start-column="2" selection-end-line="20" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/util/Date.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="785" column="21" lean-forward="true" selection-start-line="785" selection-start-column="21" selection-end-line="785" selection-end-column="21" />
+        <state relative-caret-position="13086">
+          <caret line="785" column="21" selection-start-line="785" selection-start-column="21" selection-end-line="785" selection-end-column="21" />
           <folding>
             <element signature="e#33981#33982#0" expanded="true" />
             <element signature="e#34026#34027#0" expanded="true" />
@@ -936,27 +1024,114 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/light/LightController.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/common/kotlin/util/Standard.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/util/Calendar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
+        <state relative-caret-position="568">
           <caret line="520" column="28" selection-start-line="520" selection-start-column="28" selection-end-line="520" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/light/LightController.kt">
+    <entry file="file://$PROJECT_DIR$/src/networking/EncodedClient.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="62" column="22" lean-forward="true" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
+        <state relative-caret-position="90">
+          <caret line="9" selection-start-line="9" selection-end-line="65" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/networking/SecureClient.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backup.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1188">
+          <caret line="66" column="21" selection-start-line="66" selection-start-column="21" selection-end-line="66" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/util/concurrent/ConcurrentHashMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="827" column="11" selection-start-line="827" selection-start-column="11" selection-end-line="827" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/networking/Client.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/networking/MCUClient.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/networking/HomeClient.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="62" selection-start-line="62" selection-end-line="62" />
+          <folding>
+            <element signature="e#20#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nio/Manager.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nio/NonBlockingClient.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/networking/MCUType.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="30" column="31" lean-forward="true" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="73" column="24" lean-forward="true" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#210#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="38" column="16" lean-forward="true" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#232#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="398">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
         </state>
       </provider>
     </entry>
