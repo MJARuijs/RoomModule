@@ -20,7 +20,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             println(client)
             val channel = SocketChannel.open()
             channel.connect(InetSocketAddress(client, 4442))
-            channel.write(ByteBuffer.wrap(address.toByteArray()))
+            channel.write(ByteBuffer.wrap("192.168.178.38".toByteArray()))
             channel.close()
             Thread.sleep(1000)
         }
