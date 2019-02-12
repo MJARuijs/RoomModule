@@ -17,12 +17,12 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun init() {
         knownClients.forEach { client ->
-
+            println(client)
             val channel = SocketChannel.open()
             channel.connect(InetSocketAddress(client, 4442))
             channel.write(ByteBuffer.wrap(address.toByteArray()))
             channel.close()
-//            Thread.sleep(1000)
+            Thread.sleep(1000)
         }
     }
 
