@@ -4,12 +4,27 @@ import networking.MCUType
 import nio.Manager
 import nio.NonBlockingServer
 import networking.MCUClient
+import java.io.FileWriter
+import java.io.PrintWriter
+import java.net.InetSocketAddress
+import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.util.*
 
-open class Server(port: Int, private val manager: Manager) : NonBlockingServer(port) {
+open class Server(private val address: String, port: Int, private val manager: Manager, private val knownClients: ArrayList<String>) : NonBlockingServer(port) {
 
     private val clients = HashMap<String, MCUClient>()
+
+    fun init() {
+        knownClients.forEach { client ->
+
+            val channel = SocketChannel.open()
+            channel.connect(InetSocketAddress(client, 4442))
+            channel.write(ByteBuffer.wrap(address.toByteArray()))
+            channel.close()
+//            Thread.sleep(1000)
+        }
+    }
 
     override fun onAccept(channel: SocketChannel) {
         val channelString = channel.toString()
@@ -21,6 +36,11 @@ open class Server(port: Int, private val manager: Manager) : NonBlockingServer(p
 
         val newMCU = MCUClient(channel, ::onReadCallback)
         manager.register(newMCU)
+
+        if (!clients.containsKey(address) && !knownClients.contains(address)) {
+            addToFile(address)
+        }
+
         clients[address] = newMCU
     }
 
@@ -42,15 +62,8 @@ open class Server(port: Int, private val manager: Manager) : NonBlockingServer(p
         }
 
         clients.filter { client -> client.value.type == requiredMCU }.forEach {
-            client -> if (requiredMCU == MCUType.PC_CONTROLLER) {
-                client.value.write(data)
-//                println(mcuType)
-
-            } else {
-                client.value.write(data)
-            }
+            client -> client.value.write(data)
         }
-
 
         println("Message was: $message")
     }
@@ -59,9 +72,10 @@ open class Server(port: Int, private val manager: Manager) : NonBlockingServer(p
 
         val client = clients.entries.find {  (_, client) -> client.type == type } ?.component2() ?: return
 
-        if (message.startsWith("Type: ") && client.type == MCUType.UNKNOWN) {
+        if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             println("New client with type: ${client.type}")
+
         } else {
 
             if (client.type == MCUType.SHUTTER_BUTTONS) {
@@ -106,7 +120,14 @@ open class Server(port: Int, private val manager: Manager) : NonBlockingServer(p
             if (client.type == MCUType.PC_CONTROLLER) {
 
             }
-            println("Message: $message")
         }
+        println("Message: $message")
+
+    }
+
+    private fun addToFile(connection: String) {
+        val printWriter = PrintWriter(FileWriter("res/connections.txt", true))
+        printWriter.println(connection)
+        printWriter.close()
     }
 }

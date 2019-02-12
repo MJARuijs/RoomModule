@@ -16,8 +16,6 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Unit)
         buffer.rewind()
 
         channel.write(buffer)
-
-        println("writing")
     }
 
     @Throws (ClientException::class)
