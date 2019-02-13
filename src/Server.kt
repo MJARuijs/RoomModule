@@ -21,7 +21,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
-                channel.write(ByteBuffer.wrap("192.168.178.38".toByteArray()))
+                channel.write(ByteBuffer.wrap(address.toByteArray()))
                 channel.close()
                 Thread.sleep(1000)
             } catch (e: Exception) {
@@ -50,6 +50,11 @@ open class Server(private val address: String, port: Int, private val manager: M
     }
 
     fun processCommand(message: String) {
+        if (message == "get_configuration") {
+
+
+        }
+
         val messageInfo = message.split('|')
         val mcuType = messageInfo[0].trim()
         val data = messageInfo[1].trim()

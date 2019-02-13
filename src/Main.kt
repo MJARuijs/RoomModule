@@ -36,6 +36,7 @@ object Main {
         server = Server(address, 4444, manager, connections)
         manager.register(server)
         println("Server started")
+
         server.init()
 
         val channel = SocketChannel.open()
