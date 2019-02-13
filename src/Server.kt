@@ -49,10 +49,15 @@ open class Server(private val address: String, port: Int, private val manager: M
         clients[address] = newMCU
     }
 
-    fun processCommand(message: String) {
+    fun processCommand(message: String): String {
         if (message == "get_configuration") {
-
-
+            var config = ""
+            clients.forEach { client ->
+                if (client.value.type == MCUType.PC_CONTROLLER) {
+                    config += client.value.sendCommand("get_configuration")
+                }
+            }
+            return config
         }
 
         val messageInfo = message.split('|')
@@ -76,6 +81,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         }
 
         println("Message was: $message")
+        return ""
     }
 
     private fun onReadCallback(message: String, type: MCUType) {

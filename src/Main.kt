@@ -13,6 +13,8 @@ import kotlin.Exception
 object Main {
 
     private lateinit var server: Server
+    private var ledStrip = true
+    private var presenceDetector = true
 
     @JvmStatic
     fun main(arguments: Array<String>) {
@@ -46,8 +48,8 @@ object Main {
         client.write("PI: StudyRoom")
     }
 
-    private fun onReadCallback(message: String) {
-        server.processCommand(message)
+    private fun onReadCallback(message: String): String {
+        return server.processCommand(message)
     }
 
     private fun readConnections(): ArrayList<String> {

@@ -4,7 +4,7 @@ import nio.NonBlockingClient
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
-class HomeClient(channel: SocketChannel, private val callback: (String) -> Unit) : NonBlockingClient(channel) {
+class HomeClient(channel: SocketChannel, private val callback: (String) -> String) : NonBlockingClient(channel) {
 
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
 
@@ -57,6 +57,6 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Unit)
     }
 
     override fun onRead() {
-        callback(readMessage())
+        write(callback(readMessage()))
     }
 }
