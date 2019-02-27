@@ -22,8 +22,8 @@ object Main {
     fun main(arguments: Array<String>) {
         println("Start of program")
 
-        if (!Files.exists(Path.of("connections.txt"))) {
-            Files.createFile(Path.of("connections.txt"))
+        if (!Files.exists(Path.of("res/connections.txt"))) {
+            Files.createFile(Path.of("res/connections.txt"))
             println("File created!")
         } else {
             println("File already exists!")
@@ -69,7 +69,7 @@ object Main {
         val connections = ArrayList<String>()
 
         try {
-            val stream = Files.lines(Paths.get("connections.txt"))
+            val stream = Files.lines(Paths.get("res/connections.txt"))
             stream.forEach { line -> connections += line }
         } catch (e: Exception) {
             println("FILE COULD NOT BE READ")
