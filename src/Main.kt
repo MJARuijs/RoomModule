@@ -21,6 +21,14 @@ object Main {
     @JvmStatic
     fun main(arguments: Array<String>) {
         println("Start of program")
+
+        if (!Files.exists(Path.of("res/connections.txt"))) {
+            Files.createFile(Path.of("res/connections.txt"))
+            println("File created!")
+        } else {
+            println("File already exists!")
+        }
+
         val connections = readConnections()
 
         val address = try {
@@ -33,12 +41,6 @@ object Main {
 
         println(address)
 
-        if (!Files.exists(Path.of("res/connections.txt"))) {
-            Files.createFile(Path.of("res/connections.txt"))
-            println("File created!")
-        } else {
-            println("File already exists!")
-        }
 
         val manager = Manager()
         val thread = Thread(manager, "Manager")
