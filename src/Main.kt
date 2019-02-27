@@ -36,6 +36,8 @@ object Main {
         if (!Files.exists(Path.of("res/connections.txt"))) {
             Files.createFile(Path.of("res/connections.txt"))
             println("File created!")
+        } else {
+            println("File already exists!")
         }
 
         val manager = Manager()
