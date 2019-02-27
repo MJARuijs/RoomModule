@@ -29,6 +29,8 @@ object Main {
             ""
         }
 
+        println(address)
+
         val manager = Manager()
         val thread = Thread(manager, "Manager")
         thread.start()
@@ -41,11 +43,11 @@ object Main {
 
         server.init()
 
-        val channel = SocketChannel.open()
-        channel.connect(InetSocketAddress("192.168.178.29", 4443))
-        val client = HomeClient(channel, ::onReadCallback)
-        manager.register(client)
-        client.write("PI: StudyRoom")
+//        val channel = SocketChannel.open()
+//        channel.connect(InetSocketAddress("192.168.178.29", 4443))
+//        val client = HomeClient(channel, ::onReadCallback)
+//        manager.register(client)
+//        client.write("PI: StudyRoom")
     }
 
     private fun onReadCallback(message: String): String {

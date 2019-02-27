@@ -14,6 +14,7 @@ import java.util.*
 open class Server(private val address: String, port: Int, private val manager: Manager, private val knownClients: ArrayList<String>) : NonBlockingServer(port) {
 
     private val clients = HashMap<String, MCUClient>()
+    private var configs = ArrayList<String>()
 
     fun init() {
         knownClients.forEach { client ->
@@ -21,7 +22,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
-                channel.write(ByteBuffer.wrap(address.toByteArray()))
+//                channel.write(ByteBuffer.wrap("192.168.178.18".toByteArray()))
+                channel.write(ByteBuffer.wrap("192.168.178.38".toByteArray()))
                 channel.close()
                 Thread.sleep(1000)
             } catch (e: Exception) {
@@ -51,13 +53,18 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
-            var config = ""
+            configs.clear()
             clients.forEach { client ->
                 if (client.value.type == MCUType.PC_CONTROLLER) {
-                    config += client.value.sendCommand("get_configuration")
+                    client.value.sendCommand("get_configuration")
+                    while (!client.value.available()) {}
+                    configs.add(client.value.lastMessageReceived)
                 }
             }
-            return config
+            println("GOING IN")
+//            while (configs.isEmpty()) {}
+            println("Config: ${configs.joinToString("|", "", "", -1, "", null)}")
+            return configs.joinToString("|", "", "", -1, "", null)
         }
 
         val messageInfo = message.split('|')
@@ -91,7 +98,6 @@ open class Server(private val address: String, port: Int, private val manager: M
         if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             println("New client with type: ${client.type}")
-
         } else {
 
             if (client.type == MCUType.SHUTTER_BUTTONS) {
@@ -134,7 +140,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             }
 
             if (client.type == MCUType.PC_CONTROLLER) {
-
+                    println("lol")
+                    configs.add(message)
             }
         }
         println("Message: $message")

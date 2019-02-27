@@ -7,8 +7,13 @@ import java.nio.channels.SocketChannel
 class MCUClient(channel: SocketChannel, private val callback: (String, MCUType) -> Unit): NonBlockingClient(channel) {
 
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
+    var lastMessageReceived = ""
 
     var type = MCUType.UNKNOWN
+
+    fun available(): Boolean {
+        return lastMessageReceived != ""
+    }
 
     fun sendCommand(command: String): String {
         write(command)
@@ -25,7 +30,9 @@ class MCUClient(channel: SocketChannel, private val callback: (String, MCUType) 
     }
 
     override fun onRead() {
-        callback(readMessage(), type)
+        lastMessageReceived = readMessage()
+        println("LAST MESSAGE: $lastMessageReceived")
+        callback(lastMessageReceived, type)
     }
 
     override fun read(): ByteArray {
