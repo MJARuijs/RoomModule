@@ -2,11 +2,13 @@ import light.LightController
 import light.rgb.RGBLamp
 import networking.HomeClient
 import nio.Manager
+import java.io.File
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.channels.SocketChannel
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.Exception
 
@@ -30,6 +32,11 @@ object Main {
         }
 
         println(address)
+
+        if (!Files.exists(Path.of("res/connections.txt"))) {
+            Files.createFile(Path.of("res/connections.txt"))
+            println("File created!")
+        }
 
         val manager = Manager()
         val thread = Thread(manager, "Manager")
@@ -58,7 +65,7 @@ object Main {
         val connections = ArrayList<String>()
 
         try {
-            val stream = Files.lines(Paths.get("/res/connections.txt"))
+            val stream = Files.lines(Paths.get("res/connections.txt"))
             stream.forEach { line -> connections += line }
         } catch (e: Exception) {
             println("FILE COULD NOT BE READ")
