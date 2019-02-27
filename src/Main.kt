@@ -58,7 +58,7 @@ object Main {
         val connections = ArrayList<String>()
 
         try {
-            val stream = Files.lines(Paths.get("res/connections.txt"))
+            val stream = Files.lines(Paths.get("/res/connections.txt"))
             stream.forEach { line -> connections += line }
         } catch (e: Exception) {
             println("FILE COULD NOT BE READ")
