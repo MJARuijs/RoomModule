@@ -24,10 +24,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
-//                channel.write(ByteBuffer.wrap("192.168.178.18".toByteArray()))
                 channel.write(ByteBuffer.wrap("192.168.178.38".toByteArray()))
                 channel.close()
-                Thread.sleep(1000)
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("FAILED CONNECTION WITH $client")
@@ -118,22 +116,6 @@ open class Server(private val address: String, port: Int, private val manager: M
                         MCUClient.write(message)
                     }
                 }
-
-                if (message.contains("down")) {
-                    clients.forEach { _, MCUClient ->
-                        if (MCUClient.type == MCUType.LED_STRIP_CONTROLLER) {
-                            MCUClient.write("led_strip_off")
-                        }
-                    }
-                }
-
-                if (message.contains("up")) {
-                    clients.forEach { _, MCUClient ->
-                        if (MCUClient.type == MCUType.LED_STRIP_CONTROLLER) {
-                            MCUClient.write("led_strip_on")
-                        }
-                    }
-                }
             }
 
             if (client.type == MCUType.PRESENCE_DETECTOR) {
@@ -151,7 +133,6 @@ open class Server(private val address: String, port: Int, private val manager: M
             }
 
             if (client.type == MCUType.PC_CONTROLLER) {
-                    println("lol")
                     configs.add(message)
             }
 
