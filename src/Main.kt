@@ -2,7 +2,6 @@ import light.LightController
 import light.rgb.RGBLamp
 import networking.HomeClient
 import nio.Manager
-import java.io.File
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -54,11 +53,11 @@ object Main {
 
         server.init()
 
-//        val channel = SocketChannel.open()
-//        channel.connect(InetSocketAddress("192.168.178.29", 4443))
-//        val client = HomeClient(channel, ::onReadCallback)
-//        manager.register(client)
-//        client.write("PI: StudyRoom")
+        val channel = SocketChannel.open()
+        channel.connect(InetSocketAddress("192.168.178.18", 4443))
+        val client = HomeClient(channel, ::onReadCallback)
+        manager.register(client)
+        client.write("PI: StudyRoom")
     }
 
     private fun onReadCallback(message: String): String {

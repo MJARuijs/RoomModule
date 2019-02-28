@@ -16,6 +16,8 @@ open class Server(private val address: String, port: Int, private val manager: M
     private val clients = HashMap<String, MCUClient>()
     private var configs = ArrayList<String>()
 
+    private var ledStripState = true
+
     fun init() {
         knownClients.forEach { client ->
             println(client)
@@ -27,6 +29,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                 channel.close()
                 Thread.sleep(1000)
             } catch (e: Exception) {
+                e.printStackTrace()
                 println("FAILED CONNECTION WITH $client")
             }
 
@@ -54,6 +57,15 @@ open class Server(private val address: String, port: Int, private val manager: M
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
             configs.clear()
+            configs.add("false")
+            configs.add("false")
+            configs.add("false")
+            configs.add("false")
+            if (ledStripState) {
+                configs.add("true")
+            } else {
+                configs.add("false")
+            }
             clients.forEach { client ->
                 if (client.value.type == MCUType.PC_CONTROLLER) {
                     client.value.sendCommand("get_configuration")
@@ -110,7 +122,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                 if (message.contains("down")) {
                     clients.forEach { _, MCUClient ->
                         if (MCUClient.type == MCUType.LED_STRIP_CONTROLLER) {
-                            MCUClient.write("turn_off")
+                            MCUClient.write("led_strip_off")
                         }
                     }
                 }
@@ -118,11 +130,10 @@ open class Server(private val address: String, port: Int, private val manager: M
                 if (message.contains("up")) {
                     clients.forEach { _, MCUClient ->
                         if (MCUClient.type == MCUType.LED_STRIP_CONTROLLER) {
-                            MCUClient.write("turn_on")
+                            MCUClient.write("led_strip_on")
                         }
                     }
                 }
-
             }
 
             if (client.type == MCUType.PRESENCE_DETECTOR) {
@@ -142,6 +153,15 @@ open class Server(private val address: String, port: Int, private val manager: M
             if (client.type == MCUType.PC_CONTROLLER) {
                     println("lol")
                     configs.add(message)
+            }
+
+            if (client.type == MCUType.LED_STRIP_CONTROLLER) {
+                if (message == "led_strip_on") {
+                    ledStripState = true
+                }
+                if (message == "led_strip_off") {
+                    ledStripState = false
+                }
             }
         }
         println("Message: $message")
