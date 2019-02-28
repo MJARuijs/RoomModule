@@ -150,7 +150,7 @@ open class Server(private val address: String, port: Int, private val manager: M
     }
 
     private fun addToFile(connection: String) {
-        val printWriter = PrintWriter(FileWriter("res/connections.txt", true))
+        val printWriter = PrintWriter(FileWriter("../res/connections.txt", true))
         printWriter.println(connection)
         printWriter.close()
     }
