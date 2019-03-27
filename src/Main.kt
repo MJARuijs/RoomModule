@@ -54,7 +54,7 @@ object Main {
         server.init()
 
         val channel = SocketChannel.open()
-        channel.connect(InetSocketAddress("192.168.178.29", 4443))
+        channel.connect(InetSocketAddress("192.168.178.48", 4443))
         val client = HomeClient(channel, ::onReadCallback)
         manager.register(client)
         client.write("PI: StudyRoom")
