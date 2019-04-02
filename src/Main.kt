@@ -1,6 +1,7 @@
 import light.LightController
 import light.rgb.RGBLamp
 import networking.HomeClient
+import networking.HomeServer
 import nio.Manager
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -14,6 +15,8 @@ import kotlin.Exception
 object Main {
 
     private lateinit var server: Server
+    private lateinit var manager: Manager
+
     private var ledStrip = true
     private var presenceDetector = true
 
@@ -38,10 +41,9 @@ object Main {
             ""
         }
 
-        println(address)
+        println("Address: $address")
 
-
-        val manager = Manager()
+        manager = Manager()
         val thread = Thread(manager, "Manager")
         thread.start()
         Thread.sleep(1000)
@@ -49,15 +51,22 @@ object Main {
         println("Manager started")
         server = Server(address, 4444, manager, connections)
         manager.register(server)
+
         println("Server started")
 
         server.init()
 
-        val channel = SocketChannel.open()
-        channel.connect(InetSocketAddress("192.168.178.48", 4443))
-        val client = HomeClient(channel, ::onReadCallback)
-        manager.register(client)
-        client.write("PI: StudyRoom")
+        onServerReconnected("192.168.178.18")
+
+        Thread(HomeServer("192.168.178.18", 4441, ::onServerReconnected)).start()
+    }
+
+    private fun onServerReconnected(serverAddress: String) {
+        val homeServerChannel = SocketChannel.open()
+        homeServerChannel.connect(InetSocketAddress(serverAddress, 4443))
+        val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
+        manager.register(homeServer)
+        homeServer.write("PI: StudyRoom")
     }
 
     private fun onReadCallback(message: String): String {
@@ -74,7 +83,7 @@ object Main {
             println("FILE COULD NOT BE READ")
             return connections
         }
-
+        println(connections)
         return connections
     }
 }

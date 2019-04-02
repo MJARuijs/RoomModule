@@ -20,7 +20,6 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
 
     @Throws (ClientException::class)
     override fun read(): ByteArray {
-
         // Read size
         readSizeBuffer.clear()
         val sizeBytesRead = channel.read(readSizeBuffer)
@@ -33,7 +32,6 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
 
         // Read data
         val size = readSizeBuffer.int
-
         if (size > 1000) {
             println("ERROR: too large: $size")
             throw ClientException("Size was too large")

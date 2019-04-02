@@ -20,17 +20,22 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun init() {
         knownClients.forEach { client ->
-            println(client)
+            println("Client: $client")
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
-                channel.write(ByteBuffer.wrap("192.168.178.38".toByteArray()))
+//                channel.write(ByteBuffer.wrap("192.168.178.18".toByteArray()))
+                val bytes = "192.168.178.18".toByteArray()
+                val buffer = ByteBuffer.allocate(bytes.size + 4)
+                buffer.putInt(bytes.size)
+                buffer.put(bytes)
+                buffer.rewind()
+                channel.write(buffer)
                 channel.close()
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("FAILED CONNECTION WITH $client")
             }
-
         }
     }
 
@@ -40,7 +45,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         val endIndex = channelString.lastIndexOf(':')
 
         val address = channelString.substring(startIndex, endIndex)
-        println(address)
+        println("Address: $address")
 
         val newMCU = MCUClient(channel, ::onReadCallback)
         manager.register(newMCU)
@@ -55,21 +60,26 @@ open class Server(private val address: String, port: Int, private val manager: M
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
             configs.clear()
-            configs.add("false")
-            configs.add("false")
-            configs.add("false")
-            configs.add("false")
-            if (ledStripState) {
-                configs.add("true")
-            } else {
-                configs.add("false")
-            }
+//            configs.add("false")
+//            configs.add("false")
+//            configs.add("false")
+//            configs.add("false")
+//            if (ledStripState) {
+//                configs.add("true")
+//            } else {
+//                configs.add("false")
+//            }
             clients.forEach { client ->
-                if (client.value.type == MCUType.PC_CONTROLLER) {
+                if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
+                    client.value.lastMessageReceived = ""
                     client.value.sendCommand("get_configuration")
-                    while (!client.value.available()) {}
-                    configs.add(client.value.lastMessageReceived)
+                    Thread {
+                        while (!client.value.available()) {}
+                        configs.add(client.value.lastMessageReceived)
+                    }.start()
+
                 }
+
             }
             println("GOING IN")
 //            while (configs.isEmpty()) {}
@@ -93,6 +103,9 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
+        println(requiredMCU)
+
+        println(clients.size)
         clients.filter { client -> client.value.type == requiredMCU }.forEach {
             client -> client.value.write(data)
         }
