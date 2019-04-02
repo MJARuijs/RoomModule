@@ -17,8 +17,7 @@ object Main {
     private lateinit var server: Server
     private lateinit var manager: Manager
 
-    private var ledStrip = true
-    private var presenceDetector = true
+    const val ROOM = "StudyRoom"
 
     @JvmStatic
     fun main(arguments: Array<String>) {
@@ -57,7 +56,6 @@ object Main {
         server.init()
 
         onServerReconnected("192.168.178.18")
-
         Thread(HomeServer("192.168.178.18", 4441, ::onServerReconnected)).start()
     }
 
@@ -66,7 +64,7 @@ object Main {
         homeServerChannel.connect(InetSocketAddress(serverAddress, 4443))
         val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
         manager.register(homeServer)
-        homeServer.write("PI: StudyRoom")
+        homeServer.write("PI: $ROOM")
     }
 
     private fun onReadCallback(message: String): String {
