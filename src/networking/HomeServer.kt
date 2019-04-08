@@ -20,7 +20,6 @@ class HomeServer(address: String, port: Int, private val onServerConnectedCallba
             val sizeBytes = clientChannel.read(sizeBuffer)
             if (sizeBytes < 0) {
                 clientChannel.close()
-                println("CLOSING BY SIZE")
             }
 
             sizeBuffer.rewind()
@@ -31,9 +30,7 @@ class HomeServer(address: String, port: Int, private val onServerConnectedCallba
             val bytesRead = clientChannel.read(dataBuffer)
 
             if (bytesRead < 0) {
-                println("CLOSING BY DATA")
                 clientChannel.close()
-
             }
 
             dataBuffer.rewind()

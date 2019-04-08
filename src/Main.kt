@@ -10,6 +10,7 @@ import java.nio.channels.SocketChannel
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.xml.stream.events.StartDocument
 import kotlin.Exception
 
 object Main {
@@ -35,6 +36,7 @@ object Main {
         val address = try {
             val socket = DatagramSocket()
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002)
+            socket.close()
             socket.localAddress.hostAddress
         } catch (e: Exception) {
             ""
@@ -55,13 +57,13 @@ object Main {
 
         server.init()
 
-        onServerReconnected("192.168.178.18")
         Thread(HomeServer("192.168.178.18", 4441, ::onServerReconnected)).start()
+        onServerReconnected("192.168.178.18")
     }
 
     private fun onServerReconnected(serverAddress: String) {
         val homeServerChannel = SocketChannel.open()
-        homeServerChannel.connect(InetSocketAddress(serverAddress, 4443))
+        homeServerChannel.connect(InetSocketAddress(serverAddress, 4445))
         val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
         manager.register(homeServer)
         homeServer.write("PI: $ROOM")

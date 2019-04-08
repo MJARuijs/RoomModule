@@ -10,15 +10,15 @@ import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.util.*
-import kotlin.collections.HashSet
 
 open class Server(private val address: String, port: Int, private val manager: Manager, private val knownClients: ArrayList<String>) : NonBlockingServer(port) {
 
     private val clients = HashMap<String, MCUClient>()
     private var configs = ArrayList<String>()
 
-    private val requiredMCUConfigs = HashSet<String>()
-    private var ledStripState = true
+    private val requiredMCUConfigs = ArrayList<String>()
+
+    private val pendingRequests = HashMap<Int, (String, String, MCUType) -> Unit>()
 
     fun init() {
         knownClients.forEach { client ->
@@ -26,7 +26,6 @@ open class Server(private val address: String, port: Int, private val manager: M
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
-//                channel.write(ByteBuffer.wrap("192.168.178.18".toByteArray()))
                 val bytes = address.toByteArray()
                 val buffer = ByteBuffer.allocate(bytes.size + 4)
                 buffer.putInt(bytes.size)
@@ -61,22 +60,30 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
+            clients.forEach { client ->
+                if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
+                    requiredMCUConfigs.add(client.value.address)
+                    val id = System.currentTimeMillis().toInt()
+                    pendingRequests[id] = { message, address, type ->
+                        if (requiredMCUConfigs.contains(address)) {
+                            configs.add("$type:[$message]")
+                            println("REQUIRED: $address ::: $message")
+                            requiredMCUConfigs.remove(address)
+                        }
+                    }
+                    client.value.write("id=$id;get_configuration")
+                }
+            }
+
             configs.clear()
 
-//            Thread {
-//                clients.forEach { client ->
-//                    if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
-//                        requiredMCUConfigs.add(client.value.address)
-//                        client.value.sendCommand("get_configuration")
-//                    }
-//                }
-//
-//            }.start()
-//
-//            while (requiredMCUConfigs.isNotEmpty()) {}
+            while (requiredMCUConfigs.isNotEmpty()) {
+                Thread.sleep(1)
+            }
 
-            println("${Main.ROOM}|Config: ${configs.joinToString("|", "", "", -1, "", null)}")
-            return "${Main.ROOM} Config: " + configs.joinToString("|", "", "", -1, "", null)
+            println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
+
+            return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
         }
 
         val messageInfo = message.split('|')
@@ -95,23 +102,58 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
-        clients.filter { client -> client.value.type == requiredMCU }.forEach {
-            client -> client.value.write(data)
+        clients.forEach { client ->
+            requiredMCUConfigs.add(client.value.address)
+            val id = System.currentTimeMillis().toInt()
+            pendingRequests[id] = { message, address, type ->
+                if (requiredMCUConfigs.contains(address)) {
+                    configs.add("$type:[$message]")
+                    println("REQUIRED: $address ::: $message")
+                    requiredMCUConfigs.remove(address)
+                }
+            }
+
+            if (client.value.type == requiredMCU) {
+                client.value.write("id=$id;$data")
+            } else {
+                client.value.write("id=$id;get_configuration")
+            }
+        }
+
+        configs.clear()
+
+        while (requiredMCUConfigs.isNotEmpty()) {
+            Thread.sleep(1)
         }
 
         println("Message was: $message")
-        return ""
+        println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
+
+        return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
     }
 
     private fun onReadCallback(message: String, type: MCUType) {
-        val client = clients.entries.find {  (_, client) -> client.type == type } ?.component2() ?: return
+        val client = clients.entries.find { (_, client) -> client.type == type } ?.component2() ?: return
 
-        if (requiredMCUConfigs.contains(client.address)) {
-            configs.add(message)
-            requiredMCUConfigs.remove(client.address)
-        }
+        if (message.contains("id")) {
+            val startIndex = message.indexOf("id=") + 3
+            val endIndex = message.indexOf(';')
 
-        if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
+            val id = message.substring(startIndex, endIndex).toInt()
+
+            val content = message.substring(endIndex + 1)
+
+            if (pendingRequests.containsKey(id)) {
+                println("MESSAGE ID: $id. CONTENT: $content")
+                pendingRequests[id]?.invoke(content, client.address, client.type)
+            }
+
+//            if (requiredMCUConfigs.contains(client.address)) {
+//                configs.add("$type:[$message]")
+//                println("REQUIRED: ${client.address} ::: $message")
+//                requiredMCUConfigs.remove(client.address)
+//            }
+        } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             println("New client with type: ${client.type}")
         } else {
@@ -136,22 +178,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                     LightController.setState(4, false, HSBColor(0.0f, 0.0f, 0.0f))
                 }
             }
-
-            if (client.type == MCUType.PC_CONTROLLER) {
-                configs.add(message)
-            }
-
-            if (client.type == MCUType.LED_STRIP_CONTROLLER) {
-                println("MESSAGE FROM LED_CONTROLLER")
-                if (message == "led_strip_on") {
-                    ledStripState = true
-                }
-                if (message == "led_strip_off") {
-                    ledStripState = false
-                }
-            }
         }
-
 
         println("Message: $message")
     }

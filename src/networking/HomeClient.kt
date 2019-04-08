@@ -15,6 +15,8 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         buffer.put(bytes)
         buffer.rewind()
 
+        println("Writing to server: ${String(bytes)}")
+
         channel.write(buffer)
     }
 
@@ -49,12 +51,18 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         return data.array()
     }
 
-
     override fun close() {
         channel.close()
     }
 
     override fun onRead() {
-        write(callback(readMessage()))
+        val message = readMessage()
+        Thread {
+            val response = callback(message)
+            if (response != "") {
+                println("Response: $response")
+                write(response)
+            }
+        }.start()
     }
 }
