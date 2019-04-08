@@ -57,8 +57,8 @@ object Main {
 
         server.init()
 
-        Thread(HomeServer("192.168.178.18", 4441, ::onServerReconnected)).start()
-        onServerReconnected("192.168.178.18")
+        Thread(HomeServer("192.168.178.48", 4441, ::onServerReconnected)).start()
+        onServerReconnected("192.168.178.48")
     }
 
     private fun onServerReconnected(serverAddress: String) {
