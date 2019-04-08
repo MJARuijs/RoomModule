@@ -33,6 +33,7 @@ object Main {
 
         val connections = readConnections()
 
+
         val address = try {
             val socket = DatagramSocket()
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002)
