@@ -33,7 +33,6 @@ object Main {
 
         val connections = readConnections()
 
-
         val address = try {
             val socket = DatagramSocket()
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002)
@@ -58,7 +57,7 @@ object Main {
 
         server.init()
 
-        Thread(HomeServer("192.168.178.48", 4441, ::onServerReconnected)).start()
+        Thread(HomeServer(address, 4441, ::onServerReconnected)).start()
         onServerReconnected("192.168.178.48")
     }
 
