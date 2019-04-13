@@ -132,7 +132,9 @@ open class Server(private val address: String, port: Int, private val manager: M
     }
 
     private fun onReadCallback(message: String, address: String, type: MCUType) {
-        val client = interactiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2() ?: return
+        val client = interactiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2()
+                ?: passiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2()
+                ?: return
 
         if (message.contains("id")) {
             val startIndex = message.indexOf("id=") + 3
