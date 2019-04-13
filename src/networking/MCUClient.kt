@@ -5,7 +5,7 @@ import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
-class MCUClient(channel: SocketChannel, val address: String, private val callback: (String, MCUType) -> Unit): NonBlockingClient(channel) {
+class MCUClient(channel: SocketChannel, val address: String, private val callback: (String, String, MCUType) -> Unit): NonBlockingClient(channel) {
 
     private val readSizeBuffer = ByteBuffer.allocateDirect(Integer.BYTES)
 
@@ -30,7 +30,7 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
     }
 
     override fun onRead() {
-        callback(readMessage(), type)
+        callback(readMessage(), address, type)
     }
 
     override fun read(): ByteArray {

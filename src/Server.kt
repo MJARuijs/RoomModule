@@ -62,18 +62,16 @@ open class Server(private val address: String, port: Int, private val manager: M
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
             interactiveMCUs.forEach { client ->
-//                if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
-                    requiredMCUConfigs.add(client.value.address)
-                    val id = System.currentTimeMillis().toInt()
-                    pendingRequests[id] = { message, address, type ->
-                        if (requiredMCUConfigs.contains(address)) {
-                            configs.add("$type:[$message]")
-                            println("REQUIRED: $address ::: $message")
-                            requiredMCUConfigs.remove(address)
-                        }
+                requiredMCUConfigs.add(client.value.address)
+                val id = System.currentTimeMillis().toInt()
+                pendingRequests[id] = { message, address, type ->
+                    if (requiredMCUConfigs.contains(address)) {
+                        configs.add("$type:[$message]")
+                        println("REQUIRED: $address ::: $message")
+                        requiredMCUConfigs.remove(address)
                     }
-                    client.value.write("id=$id;get_configuration")
-//                }
+                }
+                client.value.write("id=$id;get_configuration")
             }
 
             configs.clear()
@@ -133,7 +131,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
     }
 
-    private fun onReadCallback(message: String, type: MCUType) {
+    private fun onReadCallback(message: String, address: String, type: MCUType) {
         val client = interactiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2() ?: return
 
         if (message.contains("id")) {
@@ -148,12 +146,6 @@ open class Server(private val address: String, port: Int, private val manager: M
                 println("MESSAGE ID: $id. CONTENT: $content")
                 pendingRequests[id]?.invoke(content, client.address, client.type)
             }
-
-//            if (requiredMCUConfigs.contains(client.address)) {
-//                configs.add("$type:[$message]")
-//                println("REQUIRED: ${client.address} ::: $message")
-//                requiredMCUConfigs.remove(client.address)
-//            }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
