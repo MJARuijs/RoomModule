@@ -13,9 +13,10 @@ import java.util.*
 
 open class Server(private val address: String, port: Int, private val manager: Manager, private val knownClients: ArrayList<String>) : NonBlockingServer(port) {
 
-    private val clients = HashMap<String, MCUClient>()
-    private var configs = ArrayList<String>()
+    private val interactiveMCUs = HashMap<String, MCUClient>()
+    private val passiveMCUs = HashMap<String, MCUClient>()
 
+    private var configs = ArrayList<String>()
     private val requiredMCUConfigs = ArrayList<String>()
 
     private val pendingRequests = HashMap<Int, (String, String, MCUType) -> Unit>()
@@ -27,8 +28,8 @@ open class Server(private val address: String, port: Int, private val manager: M
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
                 val bytes = address.toByteArray()
-                val buffer = ByteBuffer.allocate(bytes.size + 4)
-                buffer.putInt(bytes.size)
+                val buffer = ByteBuffer.allocate(bytes.size)
+//                buffer.putInt(bytes.size)
                 buffer.put(bytes)
                 buffer.rewind()
                 channel.write(buffer)
@@ -51,17 +52,17 @@ open class Server(private val address: String, port: Int, private val manager: M
         val newMCU = MCUClient(channel, address, ::onReadCallback)
         manager.register(newMCU)
 
-        if (!clients.containsKey(address) && !knownClients.contains(address)) {
+        if (!interactiveMCUs.containsKey(address) && !knownClients.contains(address)) {
             addToFile(address)
         }
 
-        clients[address] = newMCU
+        interactiveMCUs[address] = newMCU
     }
 
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
-            clients.forEach { client ->
-                if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
+            interactiveMCUs.forEach { client ->
+//                if (client.value.type == MCUType.PC_CONTROLLER || client.value.type == MCUType.LED_STRIP_CONTROLLER) {
                     requiredMCUConfigs.add(client.value.address)
                     val id = System.currentTimeMillis().toInt()
                     pendingRequests[id] = { message, address, type ->
@@ -72,7 +73,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                         }
                     }
                     client.value.write("id=$id;get_configuration")
-                }
+//                }
             }
 
             configs.clear()
@@ -102,7 +103,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
-        clients.forEach { client ->
+        interactiveMCUs.forEach { client ->
             requiredMCUConfigs.add(client.value.address)
             val id = System.currentTimeMillis().toInt()
             pendingRequests[id] = { message, address, type ->
@@ -133,7 +134,7 @@ open class Server(private val address: String, port: Int, private val manager: M
     }
 
     private fun onReadCallback(message: String, type: MCUType) {
-        val client = clients.entries.find { (_, client) -> client.type == type } ?.component2() ?: return
+        val client = interactiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2() ?: return
 
         if (message.contains("id")) {
             val startIndex = message.indexOf("id=") + 3
@@ -155,10 +156,13 @@ open class Server(private val address: String, port: Int, private val manager: M
 //            }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
+            if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
+                passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
+            }
             println("New client with type: ${client.type}")
         } else {
             if (client.type == MCUType.SHUTTER_BUTTONS) {
-                clients.forEach { _, MCUClient ->
+                passiveMCUs.forEach { (_, MCUClient) ->
                     if (MCUClient.type == MCUType.SHUTTER_CONTROLLER) {
                         MCUClient.write(message)
                     }
