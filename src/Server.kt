@@ -157,7 +157,12 @@ open class Server(private val address: String, port: Int, private val manager: M
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
+
+                println("ADDING NEW PASSIVE $address")
+                passiveMCUs[address] = interactiveMCUs[address] ?: return
+                println("PASSIVE FOUND")
                 passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
+                println("PASSIVE REMOVED")
             }
             println("New client with type: ${client.type}")
         } else {
