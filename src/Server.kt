@@ -10,6 +10,7 @@ import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 open class Server(private val address: String, port: Int, private val manager: Manager, private val knownClients: ArrayList<String>) : NonBlockingServer(port) {
 
@@ -19,7 +20,9 @@ open class Server(private val address: String, port: Int, private val manager: M
     private var configs = ArrayList<String>()
     private val requiredMCUConfigs = ArrayList<String>()
 
-    private val pendingRequests = HashMap<Int, (String, String, MCUType) -> Unit>()
+    private val pendingRequests = HashMap<String, (String, String, MCUType) -> Unit>()
+
+    private val isProcessingMCUs = AtomicBoolean(false)
 
     fun init() {
         knownClients.forEach { client ->
@@ -61,17 +64,23 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
+
+            while (isProcessingMCUs.get()) {}
+
+            isProcessingMCUs.set(true)
             interactiveMCUs.forEach { client ->
+                println("AAADDING ${client.value.address} TO REQUIRED MCUS")
+                val id = "${System.nanoTime().toInt()}_${client.value.address}"
+                client.value.write("id=$id;get_configuration")
                 requiredMCUConfigs.add(client.value.address)
-                val id = System.currentTimeMillis().toInt()
+
                 pendingRequests[id] = { message, address, type ->
                     if (requiredMCUConfigs.contains(address)) {
                         configs.add("$type:[$message]")
-                        println("REQUIRED: $address ::: $message")
+                        println("REEEQUIRED: $address ::: $message")
                         requiredMCUConfigs.remove(address)
                     }
                 }
-                client.value.write("id=$id;get_configuration")
             }
 
             configs.clear()
@@ -79,6 +88,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             while (requiredMCUConfigs.isNotEmpty()) {
                 Thread.sleep(1)
             }
+
+            isProcessingMCUs.set(false)
 
             println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
 
@@ -101,21 +112,26 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
+        while (isProcessingMCUs.get()) {}
+
+        isProcessingMCUs.set(true)
+
         interactiveMCUs.forEach { client ->
+            println("ADDING ${client.value.address} TO REQUIRED MCUS")
+            val id = "${System.nanoTime().toInt()}_${client.value.address}"
+
+            if (client.value.type == requiredMCU) {
+                client.value.write("id=$id;$data")
+            } else {
+                client.value.write("id=$id;get_configuration")
+            }
             requiredMCUConfigs.add(client.value.address)
-            val id = System.currentTimeMillis().toInt()
             pendingRequests[id] = { message, address, type ->
                 if (requiredMCUConfigs.contains(address)) {
                     configs.add("$type:[$message]")
                     println("REQUIRED: $address ::: $message")
                     requiredMCUConfigs.remove(address)
                 }
-            }
-
-            if (client.value.type == requiredMCU) {
-                client.value.write("id=$id;$data")
-            } else {
-                client.value.write("id=$id;get_configuration")
             }
         }
 
@@ -124,6 +140,8 @@ open class Server(private val address: String, port: Int, private val manager: M
         while (requiredMCUConfigs.isNotEmpty()) {
             Thread.sleep(1)
         }
+
+        isProcessingMCUs.set(false)
 
         println("Message was: $message")
         println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
@@ -140,13 +158,15 @@ open class Server(private val address: String, port: Int, private val manager: M
             val startIndex = message.indexOf("id=") + 3
             val endIndex = message.indexOf(';')
 
-            val id = message.substring(startIndex, endIndex).toInt()
+            val id = message.substring(startIndex, endIndex)
 
             val content = message.substring(endIndex + 1)
 
             if (pendingRequests.containsKey(id)) {
                 println("MESSAGE ID: $id. CONTENT: $content")
                 pendingRequests[id]?.invoke(content, client.address, client.type)
+                pendingRequests.remove(id)
+                println("REMOVED REQUEST")
             }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
