@@ -11,11 +11,6 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
 
     var type = MCUType.UNKNOWN
 
-    fun sendCommand(command: String): String {
-        write(command)
-        return readMessage()
-    }
-
     override fun write(bytes: ByteArray) {
         try {
             val buffer = ByteBuffer.allocate(bytes.size + 4)

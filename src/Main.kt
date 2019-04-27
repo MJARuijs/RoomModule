@@ -59,13 +59,13 @@ object Main {
 
         server.init()
 
-        Thread(HomeServer(address, 4441, ::onServerReconnected)).start()
-        onServerReconnected("192.168.178.48")
+        Thread(HomeServer(address, 4442, ::onServerReconnected)).start()
+        onServerReconnected("192.168.178.151")
     }
 
     private fun onServerReconnected(serverAddress: String) {
         val homeServerChannel = SocketChannel.open()
-        homeServerChannel.connect(InetSocketAddress(serverAddress, 4445))
+        homeServerChannel.connect(InetSocketAddress(serverAddress, 4440))
         val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
         manager.register(homeServer)
         homeServer.write("PI: $ROOM")
