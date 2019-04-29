@@ -52,23 +52,27 @@ object Main {
         Thread.sleep(1000)
         LightController.addLamp(RGBLamp(4))
         println("Manager started")
-        server = Server(address, 4444, manager, connections)
+        server = Server(address, 4442, manager, connections)
         manager.register(server)
 
         println("Server started")
 
         server.init()
 
-        Thread(HomeServer(address, 4442, ::onServerReconnected)).start()
-        onServerReconnected("192.168.178.151")
+        Thread(HomeServer(address, 4443, ::onServerReconnected)).start()
+        onServerReconnected("192.168.178.18")
     }
 
     private fun onServerReconnected(serverAddress: String) {
-        val homeServerChannel = SocketChannel.open()
-        homeServerChannel.connect(InetSocketAddress(serverAddress, 4440))
-        val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
-        manager.register(homeServer)
-        homeServer.write("PI: $ROOM")
+        try {
+            val homeServerChannel = SocketChannel.open()
+            homeServerChannel.connect(InetSocketAddress(serverAddress, 4440))
+            val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
+            manager.register(homeServer)
+            homeServer.write("PI: $ROOM")
+        } catch (e: Exception) {
+            println("Failed to reconnect with server!")
+        }
     }
 
     private fun onReadCallback(message: String): String {

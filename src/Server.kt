@@ -26,19 +26,18 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun init() {
         knownClients.forEach { client ->
-            println("Client: $client")
+//            println("Client: $client")
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
                 val bytes = address.toByteArray()
-                val buffer = ByteBuffer.allocate(bytes.size)
-//                buffer.putInt(bytes.size)
+                val buffer = ByteBuffer.allocate(bytes.size + 4)
+                buffer.putInt(bytes.size)
                 buffer.put(bytes)
                 buffer.rewind()
                 channel.write(buffer)
-                channel.close()
+//                channel.close()
             } catch (e: Exception) {
-                e.printStackTrace()
                 println("FAILED CONNECTION WITH $client")
             }
         }
@@ -50,7 +49,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         val endIndex = channelString.lastIndexOf(':')
 
         val address = channelString.substring(startIndex, endIndex)
-        println("Address: $address")
+//        println("Address: $address")
 
         val newMCU = MCUClient(channel, address, ::onReadCallback)
         manager.register(newMCU)
@@ -69,7 +68,7 @@ open class Server(private val address: String, port: Int, private val manager: M
 
             isProcessingMCUs.set(true)
             interactiveMCUs.forEach { client ->
-                println("AAADDING ${client.value.address} TO REQUIRED MCUS")
+//                println("AAADDING ${client.value.address} TO REQUIRED MCUS")
                 val id = "${System.nanoTime().toInt()}_${client.value.address}"
                 client.value.write("id=$id;get_configuration")
                 requiredMCUConfigs.add(client.value.address)
@@ -77,7 +76,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                 pendingRequests[id] = { message, address, type ->
                     if (requiredMCUConfigs.contains(address)) {
                         configs.add("$type:[$message]")
-                        println("REEEQUIRED: $address ::: $message")
+//                        println("REEEQUIRED: $address ::: $message")
                         requiredMCUConfigs.remove(address)
                     }
                 }
@@ -91,7 +90,7 @@ open class Server(private val address: String, port: Int, private val manager: M
 
             isProcessingMCUs.set(false)
 
-            println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
+//            println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
 
             return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
         }
@@ -117,7 +116,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         isProcessingMCUs.set(true)
 
         interactiveMCUs.forEach { client ->
-            println("ADDING ${client.value.address} TO REQUIRED MCUS")
+//            println("ADDING ${client.value.address} TO REQUIRED MCUS")
             val id = "${System.nanoTime().toInt()}_${client.value.address}"
 
             if (client.value.type == requiredMCU) {
@@ -129,7 +128,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             pendingRequests[id] = { message, address, type ->
                 if (requiredMCUConfigs.contains(address)) {
                     configs.add("$type:[$message]")
-                    println("REQUIRED: $address ::: $message")
+//                    println("REQUIRED: $address ::: $message")
                     requiredMCUConfigs.remove(address)
                 }
             }
@@ -143,8 +142,8 @@ open class Server(private val address: String, port: Int, private val manager: M
 
         isProcessingMCUs.set(false)
 
-        println("Message was: $message")
-        println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
+//        println("Message was: $message")
+//        println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
 
         return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
     }
@@ -163,20 +162,20 @@ open class Server(private val address: String, port: Int, private val manager: M
             val content = message.substring(endIndex + 1)
 
             if (pendingRequests.containsKey(id)) {
-                println("MESSAGE ID: $id. CONTENT: $content")
+//                println("MESSAGE ID: $id. CONTENT: $content")
                 pendingRequests[id]?.invoke(content, client.address, client.type)
                 pendingRequests.remove(id)
-                println("REMOVED REQUEST")
+//                println("REMOVED REQUEST")
             }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
 
-                println("ADDING NEW PASSIVE $address")
+//                println("ADDING NEW PASSIVE $address")
                 passiveMCUs[address] = interactiveMCUs[address] ?: return
-                println("PASSIVE FOUND")
+//                println("PASSIVE FOUND")
                 passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
-                println("PASSIVE REMOVED")
+//                println("PASSIVE REMOVED")
             }
             println("New client with type: ${client.type}")
         } else {
@@ -203,7 +202,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             }
         }
 
-        println("Message: $message")
+//        println("Message: $message")
     }
 
     private fun addToFile(connection: String) {
