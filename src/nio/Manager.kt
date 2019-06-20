@@ -1,6 +1,7 @@
 package nio
 
 import networking.ClientException
+import util.Logger
 import java.nio.channels.Selector
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -43,6 +44,7 @@ class Manager : Runnable {
                             try {
                                 client.onRead()
                             } catch (exception: ClientException) {
+                                exception.printStackTrace()
                                 client.close()
                                 key.cancel()
                             }
@@ -50,7 +52,7 @@ class Manager : Runnable {
                     }
                 }
             } catch (e: Exception) {
-                println("STOPPED: ${e.message}")
+                Logger.err("STOPPED: ${e.message}")
 //                stop()
 //                break
             }

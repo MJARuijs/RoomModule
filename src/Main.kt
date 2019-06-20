@@ -3,6 +3,8 @@ import light.rgb.RGBLamp
 import networking.HomeClient
 import networking.HomeServer
 import nio.Manager
+import util.Logger
+import util.PrintStreamType
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -10,7 +12,6 @@ import java.nio.channels.SocketChannel
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import javax.xml.stream.events.StartDocument
 import kotlin.Exception
 
 object Main {
@@ -22,13 +23,17 @@ object Main {
 
     @JvmStatic
     fun main(arguments: Array<String>) {
-        println("Start of program")
+        Logger.setPrintColored(true)
+        Logger.setPrintTag(true)
+        Logger.setPrintTimeStamp(true)
+        Logger.setOut("output.txt", true, PrintStreamType.FILE)
+        Logger.info("Start of program")
 
         if (!Files.exists(Path.of("connections.txt"))) {
             Files.createFile(Path.of("connections.txt"))
-            println("File created!")
+            Logger.info("File created!")
         } else {
-            println("File already exists!")
+            Logger.info("File already exists!")
         }
 
         val connections = readConnections()
@@ -44,18 +49,18 @@ object Main {
             ""
         }
 
-        println("Address: $address")
+        Logger.debug("My Address: $address")
 
         manager = Manager()
         val thread = Thread(manager, "Manager")
         thread.start()
         Thread.sleep(1000)
         LightController.addLamp(RGBLamp(4))
-        println("Manager started")
+        Logger.info("Manager started")
         server = Server(address, 4442, manager, connections)
         manager.register(server)
 
-        println("Server started")
+        Logger.info("Server started")
 
         server.init()
 
@@ -71,7 +76,8 @@ object Main {
             manager.register(homeServer)
             homeServer.write("PI: $ROOM")
         } catch (e: Exception) {
-            println("Failed to reconnect with server!")
+            Logger.err("Failed to reconnect with server!")
+            e.printStackTrace()
         }
     }
 
@@ -86,10 +92,9 @@ object Main {
             val stream = Files.lines(Paths.get("connections.txt"))
             stream.forEach { line -> connections += line }
         } catch (e: Exception) {
-            println("FILE COULD NOT BE READ")
+            Logger.err("FILE COULD NOT BE READ")
             return connections
         }
-        println(connections)
         return connections
     }
 }

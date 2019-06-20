@@ -1,5 +1,6 @@
 package networking
 
+import util.Logger
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.ServerSocketChannel
@@ -15,6 +16,8 @@ class HomeServer(address: String, port: Int, private val onServerConnectedCallba
     override fun run() {
         while (true) {
             val clientChannel = serverChannel.accept()
+
+            Logger.info("CONNECTED")
 
             val sizeBuffer = ByteBuffer.allocate(4)
             val sizeBytes = clientChannel.read(sizeBuffer)

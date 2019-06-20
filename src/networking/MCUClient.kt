@@ -1,6 +1,7 @@
 package networking
 
 import nio.NonBlockingClient
+import util.Logger
 import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -17,7 +18,7 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
             buffer.putInt(bytes.size)
             buffer.put(bytes)
             buffer.rewind()
-            println("Writing: ${String(bytes)}. To : $type")
+            Logger.debug("Writing: ${String(bytes)}. To : $type")
             channel.write(buffer)
         } catch(e: Exception) {
             throw ClientException("")
@@ -42,7 +43,8 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
             var sizeString = ""
 
             for (i in 0 until 4) {
-                sizeString += readSizeBuffer.get().toChar()
+                val char = readSizeBuffer.get().toChar()
+                sizeString += char
             }
 
             val size = sizeString.toInt()
@@ -57,12 +59,12 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
 
             return dataBuffer.array()
         } catch(e: Exception) {
-            throw ClientException("")
+            throw ClientException(e.message!!)
         }
     }
 
     override fun close() {
-        println("closing")
+        Logger.info("closing")
         channel.close()
     }
 

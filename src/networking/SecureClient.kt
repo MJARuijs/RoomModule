@@ -1,5 +1,6 @@
 package networking
 
+import util.Logger
 import java.nio.channels.SocketChannel
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.KeyFactory
@@ -57,7 +58,7 @@ abstract class SecureClient(channel: SocketChannel) : EncodedClient(channel) {
 
             String(decryptedMessage, UTF_8)
         } catch (e: Exception) {
-            println(e.message)
+            Logger.err(e.message)
             throw RuntimeException()
         }
 

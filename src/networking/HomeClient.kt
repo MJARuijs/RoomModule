@@ -1,6 +1,7 @@
 package networking
 
 import nio.NonBlockingClient
+import util.Logger
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
@@ -15,7 +16,7 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         buffer.put(bytes)
         buffer.rewind()
 
-        println("Writing to server: ${String(bytes)}")
+        Logger.info("Writing to server: ${String(bytes)}")
 
         channel.write(buffer)
     }
@@ -35,7 +36,7 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         // Read data
         val size = readSizeBuffer.int
         if (size > 1000) {
-            println("ERROR: too large: $size")
+            Logger.err("ERROR: too large: $size")
             throw ClientException("Size was too large")
         }
 
@@ -43,6 +44,7 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         val bytesRead = channel.read(data)
 
         if (bytesRead == -1) {
+            Logger.err("BYTESREAD ")
             close()
             throw ClientException("Client was closed")
         }
@@ -60,7 +62,7 @@ class HomeClient(channel: SocketChannel, private val callback: (String) -> Strin
         Thread {
             val response = callback(message)
             if (response != "") {
-                println("Response: $response")
+                Logger.info("Response: $response")
                 write(response)
             }
         }.start()

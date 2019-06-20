@@ -4,6 +4,7 @@ import networking.MCUType
 import nio.Manager
 import nio.NonBlockingServer
 import networking.MCUClient
+import util.Logger
 import java.io.FileWriter
 import java.io.PrintWriter
 import java.net.InetSocketAddress
@@ -26,7 +27,6 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     fun init() {
         knownClients.forEach { client ->
-//            println("Client: $client")
             try {
                 val channel = SocketChannel.open()
                 channel.connect(InetSocketAddress(client, 4442))
@@ -38,7 +38,7 @@ open class Server(private val address: String, port: Int, private val manager: M
                 channel.write(buffer)
 //                channel.close()
             } catch (e: Exception) {
-                println("FAILED CONNECTION WITH $client")
+                Logger.warn("FAILED CONNECTION WITH $client")
             }
         }
     }
@@ -49,7 +49,7 @@ open class Server(private val address: String, port: Int, private val manager: M
         val endIndex = channelString.lastIndexOf(':')
 
         val address = channelString.substring(startIndex, endIndex)
-//        println("Address: $address")
+        Logger.debug("Address: $address")
 
         val newMCU = MCUClient(channel, address, ::onReadCallback)
         manager.register(newMCU)
@@ -107,6 +107,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.TV_CONTROLLER
         } else if (mcuType.contains("shutters")) {
             MCUType.SHUTTER_CONTROLLER
+        } else if (mcuType.contains("phone")) {
+            MCUType.PHONE
         } else {
             MCUType.UNKNOWN
         }
@@ -149,6 +151,7 @@ open class Server(private val address: String, port: Int, private val manager: M
     }
 
     private fun onReadCallback(message: String, address: String, type: MCUType) {
+
         val client = interactiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2()
                 ?: passiveMCUs.entries.find { (_, client) -> client.type == type } ?.component2()
                 ?: return
@@ -170,14 +173,10 @@ open class Server(private val address: String, port: Int, private val manager: M
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
             if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
-
-//                println("ADDING NEW PASSIVE $address")
                 passiveMCUs[address] = interactiveMCUs[address] ?: return
-//                println("PASSIVE FOUND")
                 passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
-//                println("PASSIVE REMOVED")
             }
-            println("New client with type: ${client.type}")
+            Logger.info("New client with type: ${client.type}")
         } else {
             if (client.type == MCUType.SHUTTER_BUTTONS) {
                 passiveMCUs.forEach { (_, MCUClient) ->
@@ -190,7 +189,6 @@ open class Server(private val address: String, port: Int, private val manager: M
             if (client.type == MCUType.PRESENCE_DETECTOR) {
                 if (message.contains("occupied")) {
 
-                    println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
                     if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 7) {
                         LightController.setState(4, true, HSBColor(8381.0f, 141.0f, 77.0f))
                     } else {
@@ -200,9 +198,16 @@ open class Server(private val address: String, port: Int, private val manager: M
                     LightController.setState(4, false, HSBColor(0.0f, 0.0f, 0.0f))
                 }
             }
+
+            if (client.type == MCUType.PHONE) {
+                if (message.contains("fetch_occupants")) {
+
+                }
+            }
         }
 
-//        println("Message: $message")
+        Logger.log(message)
+        Logger.info("Message: $message")
     }
 
     private fun addToFile(connection: String) {
