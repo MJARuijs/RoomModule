@@ -176,6 +176,10 @@ open class Server(private val address: String, port: Int, private val manager: M
                 passiveMCUs[address] = interactiveMCUs[address] ?: return
                 passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
             }
+            if (client.type == MCUType.LED_STRIP_CONTROLLER) {
+                val id = "${System.nanoTime().toInt()}_${client.address}"
+                client.write("id=$id;strip=1;r=235.0, g=20.0, b=46.0\\strip=2;r=235.0, g=20.0, b=46.0")
+            }
             Logger.info("New client with type: ${client.type}")
         } else {
             if (client.type == MCUType.SHUTTER_BUTTONS) {

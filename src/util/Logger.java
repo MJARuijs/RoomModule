@@ -116,10 +116,6 @@ public final class Logger {
                 } else {
                     loggerOutStream = new PrintStream(file);
                 }
-
-//                printTag = false;
-//                printColored = false;
-//                printTimeStamp = false;
             } catch (IOException e) {
                 err("Could not create output file: " + fileName);
             }
