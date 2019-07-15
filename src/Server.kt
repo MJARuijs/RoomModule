@@ -17,13 +17,12 @@ open class Server(private val address: String, port: Int, private val manager: M
 
     private val interactiveMCUs = HashMap<String, MCUClient>()
     private val passiveMCUs = HashMap<String, MCUClient>()
-
-    private var configs = ArrayList<String>()
-    private val requiredMCUConfigs = ArrayList<String>()
-
     private val pendingRequests = HashMap<String, (String, String, MCUType) -> Unit>()
 
+    private val requiredMCUConfigs = ArrayList<String>()
     private val isProcessingMCUs = AtomicBoolean(false)
+
+//    private
 
     fun init() {
         knownClients.forEach { client ->
@@ -36,7 +35,6 @@ open class Server(private val address: String, port: Int, private val manager: M
                 buffer.put(bytes)
                 buffer.rewind()
                 channel.write(buffer)
-//                channel.close()
             } catch (e: Exception) {
                 Logger.warn("FAILED CONNECTION WITH $client")
             }
@@ -60,7 +58,9 @@ open class Server(private val address: String, port: Int, private val manager: M
         interactiveMCUs[address] = newMCU
     }
 
-    private fun sendCommandToClients(command: String = "get_configuration", requiredMCU: MCUType = MCUType.UNKNOWN) {
+    private fun sendCommandToClients(command: String = "get_configuration", requiredMCU: MCUType = MCUType.UNKNOWN): String {
+        val configs = ArrayList<String>()
+
         while (isProcessingMCUs.get()) {}
 
         isProcessingMCUs.set(true)
@@ -89,42 +89,20 @@ open class Server(private val address: String, port: Int, private val manager: M
         }
 
         isProcessingMCUs.set(false)
-    }
 
-    private fun processGetConfigurationCommand() {
-        while (isProcessingMCUs.get()) {}
-
-        isProcessingMCUs.set(true)
-        interactiveMCUs.forEach { client ->
-            val id = "${System.nanoTime().toInt()}_${client.value.address}"
-            client.value.write("id=$id;get_configuration")
-            requiredMCUConfigs.add(client.value.address)
-
-            pendingRequests[id] = { message, address, type ->
-                if (requiredMCUConfigs.contains(address)) {
-                    configs.add("$type:[$message]")
-                    requiredMCUConfigs.remove(address)
-                }
-            }
-        }
-
-        configs.clear()
-
-        while (requiredMCUConfigs.isNotEmpty()) {
-            Thread.sleep(1)
-        }
-
-        isProcessingMCUs.set(false)
+        return configs.joinToString(",", "", "", -1, "", null)
     }
 
     fun processCommand(message: String): String {
         if (message == "get_configuration") {
-            sendCommandToClients()
-            return "{${Main.ROOM_NAME}: ${configs.joinToString(",", "", "", -1, "", null)}}"
+            val configs = sendCommandToClients()
+            return "{${Main.ROOM_NAME}: $configs}"
         }
 
         if (message == "get_all_configurations") {
-
+            var configs = sendCommandToClients()
+            passiveMCUs.forEach { (_, client) -> configs += " ${client.type} " }
+            return "{${Main.ROOM_NAME}: $configs}"
         }
 
         val messageInfo = message.split('|')
@@ -145,38 +123,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
-        sendCommandToClients(data, requiredMCU)
-//
-//        while (isProcessingMCUs.get()) {}
-//
-//        isProcessingMCUs.set(true)
-//
-//        interactiveMCUs.forEach { client ->
-//            val id = "${System.nanoTime().toInt()}_${client.value.address}"
-//
-//            if (client.value.type == requiredMCU) {
-//                client.value.write("id=$id;$data")
-//            } else {
-//                client.value.write("id=$id;get_configuration")
-//            }
-//            requiredMCUConfigs.add(client.value.address)
-//            pendingRequests[id] = { message, address, type ->
-//                if (requiredMCUConfigs.contains(address)) {
-//                    configs.add("$type:[$message]")
-//                    requiredMCUConfigs.remove(address)
-//                }
-//            }
-//        }
-//
-//        configs.clear()
-//
-//        while (requiredMCUConfigs.isNotEmpty()) {
-//            Thread.sleep(1)
-//        }
-//
-//        isProcessingMCUs.set(false)
-
-        return "{${Main.ROOM_NAME}: ${configs.joinToString(",", "", "", -1, "", null)}}"
+        val configs = sendCommandToClients(data, requiredMCU)
+        return "{${Main.ROOM_NAME}: $configs}"
     }
 
     private fun onReadCallback(message: String, address: String, type: MCUType) {

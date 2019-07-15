@@ -59,7 +59,8 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
 
             return dataBuffer.array()
         } catch(e: Exception) {
-            throw ClientException(e.message!!)
+            Logger.err(e.message!!)
+            throw ClientException("")
         }
     }
 

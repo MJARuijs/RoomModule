@@ -21,8 +21,7 @@ enum class MCUType {
     companion object {
         fun fromString(string: String): MCUType {
 
-            val type = string.removePrefix("Type: ")
-            return when (type) {
+            return when (string.removePrefix("Type: ")) {
                 "SHUTTER_CONTROLLER" -> SHUTTER_CONTROLLER
                 "SHUTTER_BUTTONS" -> SHUTTER_BUTTONS
                 "PRESENCE_DETECTOR" -> PRESENCE_DETECTOR
@@ -32,9 +31,6 @@ enum class MCUType {
                 "PHONE" -> PHONE
                 else -> UNKNOWN
             }
-
         }
     }
-
-
 }
