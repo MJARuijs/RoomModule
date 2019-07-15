@@ -49,7 +49,6 @@ open class Server(private val address: String, port: Int, private val manager: M
         val endIndex = channelString.lastIndexOf(':')
 
         val address = channelString.substring(startIndex, endIndex)
-        Logger.debug("Address: $address")
 
         val newMCU = MCUClient(channel, address, ::onReadCallback)
         manager.register(newMCU)
@@ -61,38 +60,71 @@ open class Server(private val address: String, port: Int, private val manager: M
         interactiveMCUs[address] = newMCU
     }
 
-    fun processCommand(message: String): String {
-        if (message == "get_configuration") {
+    private fun sendCommandToClients(command: String = "get_configuration", requiredMCU: MCUType = MCUType.UNKNOWN) {
+        while (isProcessingMCUs.get()) {}
 
-            while (isProcessingMCUs.get()) {}
+        isProcessingMCUs.set(true)
 
-            isProcessingMCUs.set(true)
-            interactiveMCUs.forEach { client ->
-//                println("AAADDING ${client.value.address} TO REQUIRED MCUS")
-                val id = "${System.nanoTime().toInt()}_${client.value.address}"
+        interactiveMCUs.forEach { client ->
+            val id = "${System.nanoTime().toInt()}_${client.value.address}"
+
+            if (client.value.type == requiredMCU) {
+                client.value.write("id=$id;$command")
+            } else {
                 client.value.write("id=$id;get_configuration")
-                requiredMCUConfigs.add(client.value.address)
-
-                pendingRequests[id] = { message, address, type ->
-                    if (requiredMCUConfigs.contains(address)) {
-                        configs.add("$type:[$message]")
-//                        println("REEEQUIRED: $address ::: $message")
-                        requiredMCUConfigs.remove(address)
-                    }
+            }
+            requiredMCUConfigs.add(client.value.address)
+            pendingRequests[id] = { message, address, type ->
+                if (requiredMCUConfigs.contains(address)) {
+                    configs.add("$type:[$message]")
+                    requiredMCUConfigs.remove(address)
                 }
             }
+        }
 
-            configs.clear()
+        configs.clear()
 
-            while (requiredMCUConfigs.isNotEmpty()) {
-                Thread.sleep(1)
+        while (requiredMCUConfigs.isNotEmpty()) {
+            Thread.sleep(1)
+        }
+
+        isProcessingMCUs.set(false)
+    }
+
+    private fun processGetConfigurationCommand() {
+        while (isProcessingMCUs.get()) {}
+
+        isProcessingMCUs.set(true)
+        interactiveMCUs.forEach { client ->
+            val id = "${System.nanoTime().toInt()}_${client.value.address}"
+            client.value.write("id=$id;get_configuration")
+            requiredMCUConfigs.add(client.value.address)
+
+            pendingRequests[id] = { message, address, type ->
+                if (requiredMCUConfigs.contains(address)) {
+                    configs.add("$type:[$message]")
+                    requiredMCUConfigs.remove(address)
+                }
             }
+        }
 
-            isProcessingMCUs.set(false)
+        configs.clear()
 
-//            println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
+        while (requiredMCUConfigs.isNotEmpty()) {
+            Thread.sleep(1)
+        }
 
-            return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
+        isProcessingMCUs.set(false)
+    }
+
+    fun processCommand(message: String): String {
+        if (message == "get_configuration") {
+            sendCommandToClients()
+            return "{${Main.ROOM_NAME}: ${configs.joinToString(",", "", "", -1, "", null)}}"
+        }
+
+        if (message == "get_all_configurations") {
+
         }
 
         val messageInfo = message.split('|')
@@ -113,41 +145,38 @@ open class Server(private val address: String, port: Int, private val manager: M
             MCUType.UNKNOWN
         }
 
-        while (isProcessingMCUs.get()) {}
+        sendCommandToClients(data, requiredMCU)
+//
+//        while (isProcessingMCUs.get()) {}
+//
+//        isProcessingMCUs.set(true)
+//
+//        interactiveMCUs.forEach { client ->
+//            val id = "${System.nanoTime().toInt()}_${client.value.address}"
+//
+//            if (client.value.type == requiredMCU) {
+//                client.value.write("id=$id;$data")
+//            } else {
+//                client.value.write("id=$id;get_configuration")
+//            }
+//            requiredMCUConfigs.add(client.value.address)
+//            pendingRequests[id] = { message, address, type ->
+//                if (requiredMCUConfigs.contains(address)) {
+//                    configs.add("$type:[$message]")
+//                    requiredMCUConfigs.remove(address)
+//                }
+//            }
+//        }
+//
+//        configs.clear()
+//
+//        while (requiredMCUConfigs.isNotEmpty()) {
+//            Thread.sleep(1)
+//        }
+//
+//        isProcessingMCUs.set(false)
 
-        isProcessingMCUs.set(true)
-
-        interactiveMCUs.forEach { client ->
-//            println("ADDING ${client.value.address} TO REQUIRED MCUS")
-            val id = "${System.nanoTime().toInt()}_${client.value.address}"
-
-            if (client.value.type == requiredMCU) {
-                client.value.write("id=$id;$data")
-            } else {
-                client.value.write("id=$id;get_configuration")
-            }
-            requiredMCUConfigs.add(client.value.address)
-            pendingRequests[id] = { message, address, type ->
-                if (requiredMCUConfigs.contains(address)) {
-                    configs.add("$type:[$message]")
-//                    println("REQUIRED: $address ::: $message")
-                    requiredMCUConfigs.remove(address)
-                }
-            }
-        }
-
-        configs.clear()
-
-        while (requiredMCUConfigs.isNotEmpty()) {
-            Thread.sleep(1)
-        }
-
-        isProcessingMCUs.set(false)
-
-//        println("Message was: $message")
-//        println("${Main.ROOM}|Config: ${configs.joinToString(",", "", "", -1, "", null)}")
-
-        return "${Main.ROOM} Config: " + configs.joinToString(",", "", "", -1, "", null)
+        return "{${Main.ROOM_NAME}: ${configs.joinToString(",", "", "", -1, "", null)}}"
     }
 
     private fun onReadCallback(message: String, address: String, type: MCUType) {
@@ -165,10 +194,8 @@ open class Server(private val address: String, port: Int, private val manager: M
             val content = message.substring(endIndex + 1)
 
             if (pendingRequests.containsKey(id)) {
-//                println("MESSAGE ID: $id. CONTENT: $content")
                 pendingRequests[id]?.invoke(content, client.address, client.type)
                 pendingRequests.remove(id)
-//                println("REMOVED REQUEST")
             }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
@@ -180,7 +207,6 @@ open class Server(private val address: String, port: Int, private val manager: M
                 val id = "${System.nanoTime().toInt()}_${client.address}"
                 client.write("id=$id;strip=1;r=235.0, g=20.0, b=46.0\\strip=2;r=235.0, g=20.0, b=46.0")
             }
-            Logger.info("New client with type: ${client.type}")
         } else {
             if (client.type == MCUType.SHUTTER_BUTTONS) {
                 passiveMCUs.forEach { (_, MCUClient) ->
@@ -192,7 +218,6 @@ open class Server(private val address: String, port: Int, private val manager: M
 
             if (client.type == MCUType.PRESENCE_DETECTOR) {
                 if (message.contains("occupied")) {
-
                     if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 7) {
                         LightController.setState(4, true, HSBColor(8381.0f, 141.0f, 77.0f))
                     } else {
@@ -202,15 +227,8 @@ open class Server(private val address: String, port: Int, private val manager: M
                     LightController.setState(4, false, HSBColor(0.0f, 0.0f, 0.0f))
                 }
             }
-
-            if (client.type == MCUType.PHONE) {
-                if (message.contains("fetch_occupants")) {
-
-                }
-            }
         }
 
-        Logger.log(message)
         Logger.info("Message: $message")
     }
 

@@ -19,7 +19,7 @@ object Main {
     private lateinit var server: Server
     private lateinit var manager: Manager
 
-    const val ROOM = "StudyRoom"
+    const val ROOM_NAME = "Study Room"
 
     @JvmStatic
     fun main(arguments: Array<String>) {
@@ -74,10 +74,9 @@ object Main {
             homeServerChannel.connect(InetSocketAddress(serverAddress, 4440))
             val homeServer = HomeClient(homeServerChannel, ::onReadCallback)
             manager.register(homeServer)
-            homeServer.write("PI: $ROOM")
+            homeServer.write("PI: $ROOM_NAME")
         } catch (e: Exception) {
             Logger.err("Failed to reconnect with server!")
-            e.printStackTrace()
         }
     }
 
