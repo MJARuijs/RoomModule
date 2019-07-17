@@ -22,8 +22,6 @@ open class Server(private val address: String, port: Int, private val manager: M
     private val requiredMCUConfigs = ArrayList<String>()
     private val isProcessingMCUs = AtomicBoolean(false)
 
-//    private
-
     fun init() {
         knownClients.forEach { client ->
             try {
@@ -147,7 +145,7 @@ open class Server(private val address: String, port: Int, private val manager: M
             }
         } else if (message.contains("Type: ") && client.type == MCUType.UNKNOWN) {
             client.type = MCUType.fromString(message)
-            if (client.type == MCUType.SHUTTER_CONTROLLER || client.type == MCUType.SHUTTER_BUTTONS) {
+            if (client.type == MCUType.SHUTTER_BUTTONS) {
                 passiveMCUs[address] = interactiveMCUs[address] ?: return
                 passiveMCUs[address] = interactiveMCUs.remove(address) ?: return
             }
@@ -157,9 +155,18 @@ open class Server(private val address: String, port: Int, private val manager: M
             }
         } else {
             if (client.type == MCUType.SHUTTER_BUTTONS) {
-                passiveMCUs.forEach { (_, MCUClient) ->
-                    if (MCUClient.type == MCUType.SHUTTER_CONTROLLER) {
-                        MCUClient.write(message)
+                interactiveMCUs.forEach { (_, client) ->
+                    if (client.type == MCUType.SHUTTER_CONTROLLER) {
+                        val id = "${System.nanoTime().toInt()}_${client.address}"
+                        client.write("id=$id;$message")
+                    }
+                }
+            }
+
+            if (client.type == MCUType.SHUTTER_CONTROLLER) {
+                passiveMCUs.forEach { (_, client) ->
+                    if (client.type == MCUType.SHUTTER_BUTTONS) {
+                        client.write(message)
                     }
                 }
             }
