@@ -57,7 +57,7 @@ object Main {
         Thread.sleep(1000)
         LightController.addLamp(RGBLamp(4))
         Logger.info("Manager started")
-        server = Server(address, 4442, manager, connections)
+        server = Server(address, 4441, manager, connections)
         manager.register(server)
 
         Logger.info("Server started")

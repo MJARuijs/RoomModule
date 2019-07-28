@@ -18,7 +18,7 @@ class MCUClient(channel: SocketChannel, val address: String, private val callbac
             buffer.putInt(bytes.size)
             buffer.put(bytes)
             buffer.rewind()
-//            Logger.debug("Writing: ${String(bytes)}. To : $type")
+            Logger.debug("Writing: ${String(bytes)}. To : $type")
             channel.write(buffer)
         } catch(e: Exception) {
             throw ClientException("")
